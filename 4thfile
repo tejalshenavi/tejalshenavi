@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+  <ul id="item-list">
+    <li>Item 1</li>
+    <li>Item 2</li>
+    <li>Item 3</li>
+    <li>Item 4</li>
+  </ul>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
+
+---------------
+.green-background {
+  background-color: green;
+}
+----------------
+// Make the 2nd item have green background color
+const itemList = document.getElementById('item-list');
+const secondItem = itemList.getElementsByTagName('li')[1];
+secondItem.style.backgroundColor = 'green';
+
+// Make the 3rd item invisible
+const thirdItem = itemList.getElementsByTagName('li')[2];
+thirdItem.style.display = 'none';
+
+// Using querySelectorAll, change the font color to green for the 2nd item in the item list
+const secondItemQuery = document.querySelectorAll('#item-list li:nth-child(2)');
+secondItemQuery.forEach(item => {
+  item.style.color = 'green';
+});
+
+// Choose all the odd elements and make their background green using querySelectorAll
+const oddItems = document.querySelectorAll('#item-list li:nth-child(odd)');
+oddItems.forEach(item => {
+  item.classList.add('green-background');
+});
