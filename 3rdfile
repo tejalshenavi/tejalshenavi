@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Item Lister</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Item Lister</h1>
+        <ul id="itemList" class="list-group">
+            <li class="list-group-item">Item 1</li>
+            <li class="list-group-item">Item 2</li>
+            <li class="list-group-item">Item 3</li>
+            <li class="list-group-item">Item 4</li>
+        </ul>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <!-- Your custom JavaScript file -->
+    <script src="script.js"></script>
+</body>
+</html>
+// Get the item list element
+var itemList = document.getElementById('itemList');
+
+// Create a new list item element
+var newItem = document.createElement('li');
+newItem.textContent = 'New Item';
+
+// Add a class to the new list item
+newItem.className = 'list-group-item';
+
+// Append the new list item to the item list
+itemList.appendChild(newItem);
+// Get the list of elements with the class "list-group-item"
+var itemsByClassName = document.getElementsByClassName('list-group-item');
+
+// Get the first element with the tag name "li"
+var itemByTagName = document.getElementsByTagName('li')[0];
+
+// Update the text content of the first element found by class name
+itemsByClassName[0].textContent = 'Updated Item (by ClassName)';
+
+// Update the text content of the first element found by tag name
+itemByTagName.textContent = 'Updated Item (by TagName)';
