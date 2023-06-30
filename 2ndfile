@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Item Lister</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        .green-background {
+            background-color: green;
+        }
+
+        .bold-font {
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="text-success">Item Lister</h1>
+        </div>
+        <form>
+            <div class="form-group">
+                <label for="itemInput">Add Item:</label>
+                <input type="text" class="form-control" id="itemInput" placeholder="Enter an item">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="addItem()">Submit</button>
+        </form>
+        <ul id="itemList" class="list-group mt-3">
+            <li class="list-group-item bold-font">Item 1</li>
+            <li class="list-group-item bold-font">Item 2</li>
+            <li id="item3" class="list-group-item bold-font green-background">Item 3</li>
+            <li class="list-group-item bold-font">Item 4</li>
+        </ul>
+    </div>
+
+    <script>
+        function addItem() {
+            var itemInput = document.getElementById("itemInput");
+            var itemText = itemInput.value;
+
+            if (itemText.trim() !== "") {
+                var itemList = document.getElementById("itemList");
+                var newItem = document.createElement("li");
+                newItem.className = "list-group-item bold-font";
+                newItem.textContent = itemText;
+                itemList.appendChild(newItem);
+                itemInput.value = "";
+            }
+        }
+    </script>
+</body>
+
+</html>
+ 
