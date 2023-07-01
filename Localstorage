@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Local Storage Example</title>
+</head>
+<body>
+    <h2>User Details</h2>
+    <form id="userForm">
+        <label for="name">Name:</label>
+        <input type="text" id="name" name="name" required><br><br>
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required><br><br>
+        <input type="submit" value="Submit">
+    </form>
+
+    <script>
+        // Get the form element
+        const userForm = document.getElementById('userForm');
+
+        // Add event listener for form submission
+        userForm.addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form submission
+
+            // Get user input values
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+
+            // Create an object to store user details
+            const userDetails = {
+                name: name,
+                email: email
+            };
+
+            // Convert user details object to JSON string
+            const userDetailsJSON = JSON.stringify(userDetails);
+
+            // Store the user details in local storage
+            localStorage.setItem('userDetails', userDetailsJSON);
+
+            // Clear the form inputs
+            userForm.reset();
+
+            alert('User details stored in local storage!');
+        });
+    </script>
+</body>
+</html>
