@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Contact List</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 100%;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px;
+    }
+
+    th {
+      background-color: #f2f2f2;
+    }
+
+    .delete-button {
+      background-color: #f44336;
+      border: none;
+      color: white;
+      padding: 6px 12px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 14px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Contact List</h1>
+  <table id="contact-table">
+    <tr>
+      <th>Name</th>
+      <th>Email</th>
+      <th>Action</th>
+    </tr>
+    <!-- Contact rows will be dynamically added here -->
+  </table>
+
+  <script>
+    // Sample data for demonstration
+    var contacts = [
+      { name: "John Doe", email: "john@example.com" },
+      { name: "Jane Smith", email: "jane@example.com" },
+      { name: "Mike Johnson", email: "mike@example.com" }
+    ];
+
+    // Function to display the contacts in the table
+    function displayContacts() {
+      var table = document.getElementById("contact-table");
+      table.innerHTML = ""; // Clear existing rows
+
+      for (var i = 0; i < contacts.length; i++) {
+        var contact = contacts[i];
+        var row = table.insertRow(i + 1);
+        var nameCell = row.insertCell(0);
+        var emailCell = row.insertCell(1);
+        var actionCell = row.insertCell(2);
+
+        nameCell.innerHTML = contact.name;
+        emailCell.innerHTML = contact.email;
+
+        // Create delete button with event listener
+        var deleteButton = document.createElement("button");
+        deleteButton.innerHTML = "Delete";
+        deleteButton.className = "delete-button";
+        deleteButton.addEventListener("click", createDeleteHandler(i)); // Pass index to the handler
+        actionCell.appendChild(deleteButton);
+      }
+    }
+
+    // Function to create a delete handler with the given index
+    function createDeleteHandler(index) {
+      return function() {
+        contacts.splice(index, 1); // Remove contact from the array
+
+        // Update the UI
+        displayContacts();
+
+        // Save the updated contacts to local storage
+        localStorage.setItem("contacts", JSON.stringify(contacts));
+      };
+    }
+
+    // Load contacts from local storage if available
+    var storedContacts = localStorage.getItem("contacts");
+    if (storedContacts) {
+      contacts = JSON.parse(storedContacts);
+    }
+
+    // Display initial contacts
+    displayContacts();
+  </script>
+</body>
+</html>
