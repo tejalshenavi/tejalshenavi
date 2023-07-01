@@ -1,0 +1,16 @@
+document.addEventListener("DOMContentLoaded", function() {
+  // Get the form and email field
+  const form = document.getElementById("registrationForm");
+  const emailField = document.getElementById("email");
+
+  // Update the email value
+  emailField.value = "correctemail@example.com";
+
+  // Add event listener for form submission
+  form.addEventListener("submit", function(event) {
+    event.preventDefault();
+    // Perform form submission or other actions
+    // ...
+  });
+});
+ 
