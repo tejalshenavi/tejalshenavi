@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <title>Expense Tracker</title>
+</head>
+
+<body>
+  <div class="container mt-5">
+    <h1>Expense Tracker</h1>
+    <form id="expenseForm">
+      <div class="form-group">
+        <label for="expenseDescription">Description</label>
+        <input type="text" class="form-control" id="expenseDescription" placeholder="Enter description" required>
+      </div>
+      <div class="form-group">
+        <label for="expenseAmount">Amount</label>
+        <input type="number" class="form-control" id="expenseAmount" placeholder="Enter amount" required>
+      </div>
+      <div class="form-group">
+        <label for="expenseCategory">Category</label>
+        <select class="form-control" id="expenseCategory" required>
+          <option value="" disabled selected>Select category</option>
+          <option value="Food">Food</option>
+          <option value="Transportation">Transportation</option>
+          <option value="Entertainment">Entertainment</option>
+          <option value="Bills">Bills</option>
+          <option value="Others">Others</option>
+        </select>
+      </div>
+      <button type="submit" class="btn btn-primary">Add Expense</button>
+    </form>
+
+    <div id="expenseList" class="mt-5">
+      <h3>Expense List</h3>
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Description</th>
+            <th>Amount</th>
+            <th>Category</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="expenseTableBody">
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script>
+    // Check if local storage is available
+    function isLocalStorageAvailable() {
+      try {
+        const testKey = "__test__";
+        localStorage.setItem(testKey, testKey);
+        localStorage.removeItem(testKey);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+
+    // Add expense to local storage
+    function addExpenseToLocalStorage(expense) {
+      if (isLocalStorageAvailable()) {
+        let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+        expenses.push(expense);
+        localStorage.setItem("expenses", JSON.stringify(expenses));
+      }
+    }
+
+    // Remove expense from local storage
+    function removeExpenseFromLocalStorage(index) {
+      if (isLocalStorageAvailable()) {
+        let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+        expenses.splice(index, 1);
+        localStorage.setItem("expenses", JSON.stringify(expenses));
+      }
+    }
+
+    // Render expense table
+    function renderExpenseTable() {
+      const expenseTableBody = document.getElementById("expenseTableBody");
+      expenseTableBody.innerHTML = "";
+
+      if (isLocalStorageAvailable()) {
+        let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+        expenses.forEach((expense, index) => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${expense.description}</td>
+            <td>${expense.amount}</td>
+            <td>${expense.category}</td>
+            <td>
+              <button class="btn btn-danger btn-sm" onclick="removeExpense(${index})">Delete</button>
+            </td>
+          `;
+          expenseTableBody.appendChild(row);
+        });
+      }
+    }
+
+    // Add expense event handler
+    function addExpense(event) {
+      event.preventDefault();
+
+      const expenseDescription = document.getElementById("expenseDescription").value;
+      const expenseAmount = document.getElementById("expenseAmount").value;
+      const expenseCategory = document.getElementById("expenseCategory").value;
+
+      const expense = {
+        description: expenseDescription,
+        amount: expenseAmount,
+        category: expenseCategory
+      };
+
+      addExpenseToLocalStorage(expense);
+      renderExpenseTable();
+
+      // Display success message
+      const successMessage = document.createElement("div");
+      successMessage.className = "alert alert-success mt-3";
+      successMessage.textContent = "Expense added successfully!";
+      document.getElementById("expenseList").appendChild(successMessage);
+
+      // Remove success message after 3 seconds
+      setTimeout(function () {
+        successMessage.remove();
+      }, 3000);
+
+      document.getElementById("expenseForm").reset();
+    }
+
+    // Remove expense event handler
+    function removeExpense(index) {
+      removeExpenseFromLocalStorage(index);
+      renderExpenseTable();
+    }
+
+    // Load expenses on page load
+    window.addEventListener("load", function () {
+      renderExpenseTable();
+    });
+
+    // Event listener for expense form submission
+    document.getElementById("expenseForm").addEventListener("submit", addExpense);
+  </script>
+</body>
+
+</html>
