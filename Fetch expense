@@ -1,0 +1,53 @@
+function renderExpenseTable() {
+  const expenseTableBody = document.getElementById("expenseTableBody");
+  expenseTableBody.innerHTML = "";
+
+  if (isLocalStorageAvailable()) {
+    let expenses = JSON.parse(localStorage.getItem("expenses")) || [];
+    expenses.forEach((expense, index) => {
+      const row = document.createElement("tr");
+      row.innerHTML = `
+        <td>${expense.description}</td>
+        <td>${expense.amount}</td>
+        <td>${expense.category}</td>
+        <td>
+          <button class="btn btn-danger btn-sm" onclick="removeExpense(${index})">Delete</button>
+        </td>
+      `;
+      expenseTableBody.appendChild(row);
+    });
+  }
+}
+// Add expense event handler
+function addExpense(event) {
+  event.preventDefault();
+
+  const expenseDescription = document.getElementById("expenseDescription").value;
+  const expenseAmount = document.getElementById("expenseAmount").value;
+  const expenseCategory = document.getElementById("expenseCategory").value;
+
+  const expense = {
+    description: expenseDescription,
+    amount: expenseAmount,
+    category: expenseCategory
+  };
+
+  addExpenseToLocalStorage(expense);
+
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td>${expense.description}</td>
+    <td>${expense.amount}</td>
+    <td>${expense.category}</td>
+    <td>
+      <button class="btn btn-danger btn-sm" onclick="removeExpense(${index})">Delete</button>
+    </td>
+  `;
+
+  const expenseTableBody = document.getElementById("expenseTableBody");
+  expenseTableBody.appendChild(row);
+
+  renderExpenseTable();
+
+  document.getElementById("expenseForm").reset();
+}
