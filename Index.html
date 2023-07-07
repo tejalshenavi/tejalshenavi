@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Expense Tracker App</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/css/bootstrap.min.css">
+</head>
+<body>
+  <div class="container">
+    <h1>Expense Tracker</h1>
+  
+    <!-- Add expense form -->
+    <form id="expenseForm">
+      <div class="row mb-3">
+        <div class="col">
+          <input type="text" class="form-control" placeholder="Expense Name" id="expenseName" required>
+        </div>
+        <div class="col">
+          <input type="number" class="form-control" placeholder="Amount" id="expenseAmount" required>
+        </div>
+        <div class="col">
+          <button type="submit" class="btn btn-primary">Add Expense</button>
+        </div>
+      </div>
+    </form>
+  
+    <!-- Expense table -->
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th>Expense Name</th>
+          <th>Amount</th>
+          <th>Options</th>
+        </tr>
+      </thead>
+      <tbody id="expenseList">
+        <!-- Expense rows will be added dynamically using JavaScript -->
+      </tbody>
+    </table>
+  </div>
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.0.2/js/bootstrap.bundle.min.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
