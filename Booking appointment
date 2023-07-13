@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Booking Appointment App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    form {
+      max-width: 300px;
+      margin: 20px auto;
+    }
+    input[type="text"], input[type="date"], input[type="time"], textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <h1>Booking Appointment App</h1>
+  <form id="appointmentForm">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <input type="date" id="date" required>
+    <input type="time" id="time" required>
+    <textarea id="description" placeholder="Appointment Description" required></textarea>
+    <input type="submit" value="Book Appointment">
+  </form>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    document.getElementById('appointmentForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const description = document.getElementById('description').value;
+
+      const appointment = {
+        name: name,
+        email: email,
+        date: date,
+        time: time,
+        description: description
+      };
+
+      // Make the POST request to store the appointment in the cloud
+      axios.post('https://crudcrud.com/api/your-api-endpoint', appointment)
+        .then(response => {
+          console.log('Appointment booked successfully!');
+          console.log('Response:', response.data);
+          // Clear form fields
+          document.getElementById('name').value = '';
+          document.getElementById('email').value = '';
+          document.getElementById('date').value = '';
+          document.getElementById('time').value = '';
+          document.getElementById('description').value = '';
+        })
+        .catch(error => {
+          console.error('Error booking appointment:', error);
+        });
+    });
+  </script>
+</body>
+</html>
