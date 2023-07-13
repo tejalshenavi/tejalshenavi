@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Booking Appointment App</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+    form {
+      max-width: 300px;
+      margin: 20px auto;
+    }
+    input[type="text"], input[type="date"], input[type="time"], textarea {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    input[type="submit"] {
+      background-color: #4CAF50;
+      color: white;
+      padding: 10px 16px;
+      border: none;
+      cursor: pointer;
+    }
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+    #appointmentList {
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <h1>Booking Appointment App</h1>
+  <form id="appointmentForm">
+    <input type="text" id="name" placeholder="Your Name" required>
+    <input type="email" id="email" placeholder="Your Email" required>
+    <input type="date" id="date" required>
+    <input type="time" id="time" required>
+    <textarea id="description" placeholder="Appointment Description" required></textarea>
+    <input type="submit" value="Book Appointment">
+  </form>
+
+  <h2>Appointments</h2>
+  <ul id="appointmentList"></ul>
+
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script>
+    // Function to display appointments in the list
+    function displayAppointments(appointments) {
+      const appointmentList = document.getElementById('appointmentList');
+
+      // Clear the list first
+      appointmentList.innerHTML = '';
+
+      appointments.forEach(appointment => {
+        const listItem = document.createElement('li');
+        listItem.textContent = `${appointment.name} - ${appointment.date} ${appointment.time}: ${appointment.description}`;
+        appointmentList.appendChild(listItem);
+      });
+    }
+
+    // Function to retrieve saved appointments from Crud Crud
+    function getSavedAppointments() {
+      axios.get('https://crudcrud.com/api/your-api-endpoint')
+        .then(response => {
+          const appointments = response.data;
+          console.log('Appointments retrieved successfully:', appointments);
+          displayAppointments(appointments);
+        })
+        .catch(error => {
+          console.error('Error retrieving appointments:', error);
+        });
+    }
+
+    // Call the function to retrieve saved appointments when the DOM has loaded
+    document.addEventListener('DOMContentLoaded', getSavedAppointments);
+
+    // Event listener for form submission
+    document.getElementById('appointmentForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const description = document.getElementById('description').value;
+
+      const appointment = {
+        name: name,
+        email: email,
+        date: date,
+        time: time,
+        description: description
+      };
+
+      // Make the POST request to store the appointment in the cloud
+      axios.post('https://crudcrud.com/api/your-api-endpoint', appointment)
+        .then(response => {
+          console.log('Appointment booked successfully!');
+          console.log('Response:', response.data);
+          // Clear form fields
+          document.getElementById('name').value = '';
+          document.getElementById('email').value = '';
+          document.getElementById('date').value = '';
+          document.getElementById('time').value = '';
+          document.getElementById('description').value = '';
+          // Retrieve updated appointments and display them
+          getSavedAppointments();
+        })
+        .catch(error => {
+          console.error('Error booking appointment:', error);
+        });
+    });
+  </script>
+</body>
+</html>
