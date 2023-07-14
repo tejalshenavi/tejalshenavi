@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>User Details</title>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+<body>
+  <h1>User Details</h1>
+  <table id="userTable">
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Email</th>
+        <th>Action</th>
+      </tr>
+    </thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    $(document).ready(function() {
+      // Function to render user details on the website
+      function renderUserDetails(userDetails) {
+        var tableRow = '';
+        userDetails.forEach(function(user) {
+          tableRow += '<tr id="' + user._id + '">';
+          tableRow += '<td>' + user.name + '</td>';
+          tableRow += '<td>' + user.email + '</td>';
+          tableRow += '<td><button class="deleteBtn" data-id="' + user._id + '">Delete</button></td>';
+          tableRow += '</tr>';
+        });
+        $('#userTable tbody').html(tableRow);
+      }
+
+      // Function to handle delete button click
+      $(document).on('click', '.deleteBtn', function() {
+        var userId = $(this).data('id');
+
+        // Send DELETE request to the server
+        $.ajax({
+          url: '/api/users/' + userId,
+          type: 'DELETE',
+          success: function(response) {
+            // Remove the deleted user detail from the website
+            $('#' + userId).remove();
+          },
+          error: function(error) {
+            console.log('Error:', error);
+          }
+        });
+      });
+
+      // Fetch user details from the server
+      $.ajax({
+        url: '/api/users',
+        type: 'GET',
+        success: function(response) {
+          renderUserDetails(response);
+        },
+        error: function(error) {
+          console.log('Error:', error);
+        }
+      });
+    });
+  </script>
+</body>
+</html>
