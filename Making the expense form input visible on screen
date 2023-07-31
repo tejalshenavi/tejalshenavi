@@ -1,0 +1,36 @@
+
+import React, { useState } from 'react';
+import ExpenseForm from './ExpenseForm';
+
+const App = () => {
+  // Initialize state for expenses
+  const [expenses, setExpenses] = useState([]);
+
+  // Function to add an expense
+  const addExpenseHandler = (newExpense) => {
+    setExpenses((prevExpenses) => [...prevExpenses, newExpense]);
+  };
+
+  return (
+    <div>
+      <h1>Expense Tracker</h1>
+      <ExpenseForm onAddExpense={addExpenseHandler} />
+
+      {/* Render the list of expenses */}
+      <ul>
+        {expenses.map((expense, index) => (
+          <li key={index}>
+            {expense.title} - ${expense.amount} - {expense.date}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default App;
+
+
+//In App.js, we pass the addExpenseHandler function as a prop named onAddExpense to the ExpenseForm component. Then, whenever a new expense is added via the form, the addExpenseHandler function will be called, updating the expenses state in the App component.
+
+//Now, when you fill in the details in the ExpenseForm and click the "Add Expense" button, the new expense will be added to the expenses state and displayed dynamically in the UI as a list below the form.
