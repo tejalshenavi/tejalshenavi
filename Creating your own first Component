@@ -217,4 +217,70 @@ export default App;
 
 
 
+/////////////////________/////////////
+
+//To achieve logging the user input in the console whenever anything is typed in the ExpenseForm, we'll use React's onChange event handlers in the input fields. Here's the updated ExpenseForm component to log the changes:
+
+import React, { useState } from 'react';
+
+const ExpenseForm = () => {
+  // Initialize state for the form inputs
+  const [title, setTitle] = useState('');
+  const [amount, setAmount] = useState('');
+  const [date, setDate] = useState('');
+
+  // Event handler for input change
+  const handleInputChange = (event) => {
+    const { name, value } = event.target;
+    console.log(`Input field "${name}" changed to: ${value}`);
+    // Update the corresponding state based on the input name
+    switch (name) {
+      case 'title':
+        setTitle(value);
+        break;
+      case 'amount':
+        setAmount(value);
+        break;
+      case 'date':
+        setDate(value);
+        break;
+      default:
+        break;
+    }
+  };
+
+  return (
+    <form>
+      <div>
+        <label>Title:</label>
+        <input
+          type="text"
+          name="title"
+          value={title}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div>
+        <label>Amount:</label>
+        <input
+          type="number"
+          name="amount"
+          value={amount}
+          onChange={handleInputChange}
+        />
+      </div>
+      <div>
+        <label>Date:</label>
+        <input
+          type="date"
+          name="date"
+          value={date}
+          onChange={handleInputChange}
+        />
+      </div>
+    </form>
+  );
+};
+
+export default ExpenseForm;
 
