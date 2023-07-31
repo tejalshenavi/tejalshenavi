@@ -1,0 +1,212 @@
+//To power the submit button in the ExpenseForm and create an object containing the user input and log it on the screen, we can add a handleSubmit function to handle the form submission. Here's the updated ExpenseForm component:
+
+
+
+import React, { useState } from 'react';
+
+
+
+const ExpenseForm = () => {
+
+  // Initialize state for the form inputs
+
+  const [title, setTitle] = useState('');
+
+  const [amount, setAmount] = useState('');
+
+  const [date, setDate] = useState('');
+
+
+
+  // Additional states to track entered values
+
+  const [enteredTitle, setEnteredTitle] = useState('');
+
+  const [enteredAmount, setEnteredAmount] = useState('');
+
+  const [enteredDate, setEnteredDate] = useState('');
+
+
+
+  // Event handler for input change
+
+  const handleInputChange = (event) => {
+
+    const { name, value } = event.target;
+
+    console.log(`Input field "${name}" changed to: ${value}`);
+
+
+
+    // Update the corresponding entered state based on the input name
+
+    switch (name) {
+
+      case 'title':
+
+        setEnteredTitle(value);
+
+        break;
+
+      case 'amount':
+
+        setEnteredAmount(value);
+
+        break;
+
+      case 'date':
+
+        setEnteredDate(value);
+
+        break;
+
+      default:
+
+        break;
+
+    }
+
+  };
+
+
+
+  // Function to handle form submission
+
+  const handleSubmit = (event) => {
+
+    event.preventDefault();
+
+
+
+    // Create the new expense object
+
+    const newExpense = {
+
+      title: enteredTitle,
+
+      amount: enteredAmount,
+
+      date: enteredDate,
+
+    };
+
+
+
+    // Log the newExpense object on the screen
+
+    console.log('New Expense:', newExpense);
+
+
+
+    // Clear the form inputs
+
+    setTitle('');
+
+    setAmount('');
+
+    setDate('');
+
+
+
+    // You can also call any other function here to process the newExpense object
+
+  };
+
+
+
+  return (
+
+    <form onSubmit={handleSubmit}>
+
+      <div>
+
+        <label>Title:</label>
+
+        <input
+
+          type="text"
+
+          name="title"
+
+          value={title}
+
+          onChange={(e) => {
+
+            setTitle(e.target.value);
+
+            handleInputChange(e);
+
+          }}
+
+        />
+
+      </div>
+
+      <div>
+
+        <label>Amount:</label>
+
+        <input
+
+          type="number"
+
+          name="amount"
+
+          value={amount}
+
+          onChange={(e) => {
+
+            setAmount(e.target.value);
+
+            handleInputChange(e);
+
+          }}
+
+        />
+
+      </div>
+
+      <div>
+
+        <label>Date:</label>
+
+        <input
+
+          type="date"
+
+          name="date"
+
+          value={date}
+
+          onChange={(e) => {
+
+            setDate(e.target.value);
+
+            handleInputChange(e);
+
+          }}
+
+        />
+
+      </div>
+
+      <button type="submit">Add Expense</button>
+
+    </form>
+
+  );
+
+};
+
+
+
+export default ExpenseForm;
+
+
+
+//Now, when you fill in the details in the ExpenseForm and click the "Add Expense" button, it will log the new expense object containing the entered values on the console.  
+
+
+
+
+
