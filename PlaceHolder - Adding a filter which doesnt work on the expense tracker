@@ -1,0 +1,41 @@
+
+import React, { useState } from 'react';
+
+const ExpenseTracker = () => {
+  const [expenses, setExpenses] = useState([
+    { id: 1, description: 'Groceries', amount: 50 },
+    { id: 2, description: 'Gas', amount: 30 },
+    { id: 3, description: 'Dinner', amount: 40 },
+    // Add more expenses here...
+  ]);
+
+  const [filter, setFilter] = useState('');
+
+  const handleFilterChange = (event) => {
+    setFilter(event.target.value);
+  };
+
+  const filteredExpenses = expenses.filter((expense) =>
+    expense.description.toLowerCase().includes(filter.toLowerCase())
+  );
+
+  return (
+    <div>
+      <input
+        type="text"
+        value={filter}
+        onChange={handleFilterChange}
+        placeholder="Filter expenses..."
+      />
+      <ul>
+        {filteredExpenses.map((expense) => (
+          <li key={expense.id}>
+            {expense.description} - ${expense.amount}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default ExpenseTracker;
