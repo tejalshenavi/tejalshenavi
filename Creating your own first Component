@@ -1,0 +1,220 @@
+//update the ExpenseTracker component and App.js to include the ExpenseForm. Here's the code:
+
+
+
+//ExpenseForm.js:
+
+import React, { useState } from 'react';
+
+
+
+const ExpenseForm = ({ onAddExpense }) => {
+
+ // Initialize state for the form inputs
+
+ const [title, setTitle] = useState('');
+
+ const [amount, setAmount] = useState('');
+
+ const [date, setDate] = useState('');
+
+
+
+ // Function to handle form submission
+
+ const handleSubmit = (event) => {
+
+  event.preventDefault();
+
+
+
+  // Check if all fields are filled
+
+  if (title.trim() === '' || amount.trim() === '' || date.trim() === '') {
+
+   alert('Please fill all fields.');
+
+   return;
+
+  }
+
+
+
+  // Create the new expense object
+
+  const newExpense = {
+
+   title,
+
+   amount,
+
+   date,
+
+  };
+
+
+
+  // Clear the form inputs
+
+  setTitle('');
+
+  setAmount('');
+
+  setDate('');
+
+
+
+  // Call the onAddExpense function from the parent component
+
+  onAddExpense(newExpense);
+
+ };
+
+
+
+ return (
+
+  <form onSubmit={handleSubmit}>
+
+   <div>
+
+    <label>Title:</label>
+
+    <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+
+   </div>
+
+   <div>
+
+    <label>Amount:</label>
+
+    <input type="number" value={amount} onChange={(e) => setAmount(e.target.value)} />
+
+   </div>
+
+   <div>
+
+    <label>Date:</label>
+
+    <input type="date" value={date} onChange={(e) => setDate(e.target.value)} />
+
+   </div>
+
+   <button type="submit">Add Expense</button>
+
+  </form>
+
+ );
+
+};
+
+
+
+export default ExpenseForm;
+
+
+
+
+
+//ExpenseTracker.js:
+
+import React, { useState } from 'react';
+
+import ExpenseForm from './ExpenseForm';
+
+
+
+const ExpenseTracker = () => {
+
+  // Initialize expenses state
+
+  const [expenses, setExpenses] = useState([]);
+
+
+
+  // Function to handle adding an expense
+
+  const handleAddExpense = (newExpense) => {
+
+    // Create a copy of the expenses array and add the new expense
+
+    const updatedExpenses = [...expenses, newExpense];
+
+    setExpenses(updatedExpenses);
+
+  };
+
+
+
+  return (
+
+    <div>
+
+      {/* Render the list of expenses */}
+
+      <ul>
+
+        {expenses.map((expense, index) => (
+
+          <li key={index}>
+
+            {expense.title} - ${expense.amount} - {expense.date}
+
+          </li>
+
+        ))}
+
+      </ul>
+
+
+
+      {/* Render the ExpenseForm component */}
+
+      <ExpenseForm onAddExpense={handleAddExpense} />
+
+    </div>
+
+  );
+
+};
+
+
+
+export default ExpenseTracker;
+
+
+
+
+
+//App.js:
+
+import React from 'react';
+
+import ExpenseTracker from './ExpenseTracker';
+
+
+
+const App = () => {
+
+ return (
+
+  <div>
+
+   <h1>Expense Tracker</h1>
+
+   <ExpenseTracker />
+
+  </div>
+
+ );
+
+};
+
+
+
+export default App;
+
+
+
+
+
