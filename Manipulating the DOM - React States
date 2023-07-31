@@ -1,0 +1,34 @@
+import React, { useState } from 'react';
+
+const ExpenseTracker = () => {
+  // Initialize expenses state
+  const [expenses, setExpenses] = useState(['Expense 1', 'Expense 2', 'Expense 3']);
+
+  // Function to handle changing an expense to $100
+  const handleChangeTo100 = (index) => {
+    // Create a copy of the expenses array
+    const updatedExpenses = [...expenses];
+
+    // Change the expense at the specified index to $100
+    updatedExpenses[index] = '100$';
+
+    // Update the expenses state
+    setExpenses(updatedExpenses);
+  };
+
+  return (
+    <div>
+      {/* Render the list of expenses */}
+      <ul>
+        {expenses.map((expense, index) => (
+          <li key={index}>
+            {expense}{' '}
+            <button onClick={() => handleChangeTo100(index)}>Change to $100</button>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default ExpenseTracker;
