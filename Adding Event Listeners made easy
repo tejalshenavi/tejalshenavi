@@ -1,0 +1,51 @@
+//component ExpenseTracker:
+
+import React, { useState } from 'react';
+
+const ExpenseTracker = () => {
+  // Initialize expenses state
+  const [expenses, setExpenses] = useState(['Expense 1', 'Expense 2', 'Expense 3']);
+
+  // Function to delete an expense
+  const handleDeleteExpense = () => {
+    if (expenses.length > 0) {
+      // Create a copy of the expenses array and remove the last expense
+      const updatedExpenses = expenses.slice(0, expenses.length - 1);
+      setExpenses(updatedExpenses);
+    } else {
+      // Show an alert if there are no expenses to delete
+      alert('No expenses to delete.');
+    }
+  };
+
+  return (
+    <div>
+      {/* Render the list of expenses */}
+      <ul>
+        {expenses.map((expense, index) => (
+          <li key={index}>{expense}</li>
+        ))}
+      </ul>
+
+      {/* Button to delete expense */}
+      <button onClick={handleDeleteExpense}>Delete Expense</button>
+    </div>
+  );
+};
+
+export default ExpenseTracker;
+
+//App.js
+import React from 'react';
+import ExpenseTracker from './ExpenseTracker';
+
+const App = () => {
+  return (
+    <div>
+      <h1>Expense Tracker</h1>
+      <ExpenseTracker />
+    </div>
+  );
+};
+
+export default App;
