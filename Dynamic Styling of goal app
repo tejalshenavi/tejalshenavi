@@ -1,0 +1,154 @@
+//GoalForm.js:
+
+
+
+import React, { useState } from 'react';
+
+import AddGoalButton from './AddGoalButton';
+
+
+
+const GoalForm = () => {
+
+  const [goal, setGoal] = useState('');
+
+
+
+  const handleInputChange = (e) => {
+
+    setGoal(e.target.value);
+
+  };
+
+
+
+  return (
+
+    <div>
+
+      <input type="text" value={goal} onChange={handleInputChange} />
+
+      <AddGoalButton goal={goal} />
+
+    </div>
+
+  );
+
+};
+
+
+
+export default GoalForm;
+
+
+
+//AddGoalButton.js:
+
+
+
+import React, { useState, useEffect } from 'react';
+
+
+
+const AddGoalButton = ({ goal }) => {
+
+  const [buttonColor, setButtonColor] = useState('red');
+
+
+
+  useEffect(() => {
+
+    // Change the button color based on input value
+
+    if (goal.trim().length === 1) {
+
+      setButtonColor('red');
+
+    } else {
+
+      setButtonColor('lightcoral');
+
+    }
+
+  }, [goal]);
+
+
+
+  const handleAddGoal = () => {
+
+    // Handle adding the goal to the list or any other action you need
+
+    if (goal.trim().length > 0) {
+
+      // Add your logic here to handle adding the goal
+
+    } else {
+
+      // Handle case where nothing is entered
+
+      setButtonColor('lightcoral');
+
+    }
+
+  };
+
+
+
+  return (
+
+    <button style={{ backgroundColor: buttonColor }} onClick={handleAddGoal}>
+
+      Add Goal
+
+    </button>
+
+  );
+
+};
+
+
+
+export default AddGoalButton;
+
+
+
+
+
+//App.js
+
+
+
+import React from 'react';
+
+import GoalForm from './GoalForm';
+
+
+
+const App = () => {
+
+  return (
+
+    <div>
+
+      <h1>My Goal Tracker App</h1>
+
+      <GoalForm />
+
+    </div>
+
+  );
+
+};
+
+
+
+export default App;
+
+
+
+
+
+
+
+
+
