@@ -1,0 +1,223 @@
+//Create a new file named AuthContext.js:
+import React, { createContext, useState } from 'react';
+
+const AuthContext = createContext({
+  isLoggedIn: false,
+  login: () => {},
+  logout: () => {},
+});
+
+export const AuthContextProvider = ({ children }) => {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const loginHandler = () => {
+    setIsLoggedIn(true);
+  };
+
+  const logoutHandler = () => {
+    setIsLoggedIn(false);
+  };
+
+  return (
+    <AuthContext.Provider value={{ isLoggedIn, login: loginHandler, logout: logoutHandler }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+export default AuthContext;
+
+
+//Update App.js to use the AuthContextProvider:
+import React from 'react';
+import './App.css';
+import { AuthContextProvider } from './AuthContext';
+import Login from './Login';
+import Welcome from './Welcome';
+
+function App() {
+  return (
+    <AuthContextProvider>
+      <div className="app-container">
+        <Welcome />
+        <Login />
+      </div>
+    </AuthContextProvider>
+  );
+}
+
+export default App;
+
+//Update Login.js to use the AuthContext:
+import React, { useState, useContext } from 'react';
+import './Login.css';
+import AuthContext from './AuthContext';
+
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailValid, setEmailValid] = useState(true);
+  const authCtx = useContext(AuthContext);
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+    setEmailValid(event.target.value.includes('@'));
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleLogin = () => {
+    if (emailValid && password) {
+      authCtx.login();
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <h1>Login Page</h1>
+      <input
+        type="text"
+        placeholder="Email"
+        value={email}
+        onChange={handleEmailChange}
+        className={emailValid ? '' : 'invalid'}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={handlePasswordChange}
+      />
+      <button onClick={handleLogin}>Login</button>
+    </div>
+  );
+};
+
+export default Login;
+
+//Update Welcome.js to use the AuthContext
+import React, { useContext } from 'react';
+import './Welcome.css';
+import AuthContext from './AuthContext';
+
+const Welcome = () => {
+  const authCtx = useContext(AuthContext);
+
+  const handleLogout = () => {
+    authCtx.logout();
+  };
+
+  return (
+    <div className="welcome-container">
+      <h1>Welcome!</h1>
+      <button onClick={handleLogout}>Logout</button>
+    </div>
+  );
+};
+
+export default Welcome;
+
+//Login.css:
+/* Login.css */
+.login-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.login-container input {
+  display: block;
+  margin: 10px 0;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.login-container input.invalid {
+  border-color: #f00;
+}
+
+.login-container button {
+  display: block;
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.login-container button:hover {
+  background-color: #0056b3;
+}
+
+.login-container h1 {
+  margin-bottom: 20px;
+}
+
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+/* Welcome.css */
+.welcome-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.welcome-container h1 {
+  margin-bottom: 20px;
+}
+
+.welcome-container button {
+  display: block;
+  margin-top: 10px;
+  padding: 8px;
+  background-color: #dc3545;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  width: 100%;
+  cursor: pointer;
+}
+
+.welcome-container button:hover {
+  background-color: #ac292e;
+}
+
+/* App.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+.app-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0;
+}
+
+
+
+
