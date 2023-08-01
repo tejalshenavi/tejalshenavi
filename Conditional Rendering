@@ -1,0 +1,31 @@
+import React from 'react';
+
+class ExpenseList extends React.Component {
+  render() {
+    const { expenses } = this.props;
+
+    if (expenses.length === 1) {
+      return (
+        <div>
+          <ul>
+            {expenses.map((expense, index) => (
+              <li key={index}>{expense}</li>
+            ))}
+          </ul>
+          <p>Only single Expense here. Please add more...</p>
+        </div>
+      );
+    }
+
+    return (
+      <ul>
+        {expenses.map((expense, index) => (
+          <li key={index}>{expense}</li>
+        ))}
+      </ul>
+    );
+  }
+}
+
+export default ExpenseList;
+
