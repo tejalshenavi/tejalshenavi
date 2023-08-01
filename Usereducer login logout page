@@ -1,0 +1,142 @@
+//Login.js:
+import React, { useState } from 'react';
+import './Login.css';
+
+const Login = ({ onLogin }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [emailValid, setEmailValid] = useState(true);
+
+  const handleEmailChange = (event) => {
+    setEmail(event.target.value);
+    setEmailValid(event.target.value.includes('@'));
+  };
+
+  const handlePasswordChange = (event) => {
+    setPassword(event.target.value);
+  };
+
+  const handleLogin = () => {
+    if (emailValid && password) {
+      onLogin();
+    }
+  };
+
+  return (
+    <div className="login-container">
+      <h1>Login Page</h1>
+      <input
+        type="text"
+        placeholder="Email"
+        value={email}
+        onChange={handleEmailChange}
+        className={emailValid ? '' : 'invalid'}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        value={password}
+        onChange={handlePasswordChange}
+      />
+      <button onClick={handleLogin}>Login</button>
+    </div>
+  );
+};
+
+export default Login;
+
+
+
+//Login.css:
+/* Login.css */
+.login-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.login-container input {
+  display: block;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  width: 100%;
+}
+
+.login-container input.invalid {
+  border-color: #f00;
+}
+
+
+
+//Welcome.js:
+import React from 'react';
+import './Welcome.css';
+
+const Welcome = ({ onLogout }) => {
+  return (
+    <div className="welcome-container">
+      <h1>Welcome!</h1>
+      <button onClick={onLogout}>Logout</button>
+    </div>
+  );
+};
+
+export default Welcome;
+
+//Welcome.css:
+/* Welcome.css */
+.welcome-container {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.welcome-container button {
+  display: block;
+  margin-bottom: 10px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+
+//App.js
+
+import React, { useState } from 'react';
+import './App.css';
+import Login from './Login';
+import Welcome from './Welcome';
+
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+  const handleLogin = () => {
+    setIsLoggedIn(true);
+  };
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+  };
+
+  return (
+    <div className="app-container">
+      {isLoggedIn ? (
+        <Welcome onLogout={handleLogout} />
+      ) : (
+        <Login onLogin={handleLogin} />
+      )}
+    </div>
+  );
+}
+
+export default App;
+
+
+
+
