@@ -1,0 +1,119 @@
+//ExpenseForm Component:
+
+import React, { useState } from 'react';
+
+const ExpenseForm = ({ onAddExpense }) => {
+  const [title, setTitle] = useState('');
+  const [amount, setAmount] = useState('');
+  const [date, setDate] = useState('');
+
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
+
+  const handleAmountChange = (event) => {
+    setAmount(event.target.value);
+  };
+
+  const handleDateChange = (event) => {
+    setDate(event.target.value);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    if (title.trim() === '' || amount.trim() === '' || date.trim() === '') {
+      return;
+    }
+    const newExpense = {
+      id: Date.now(),
+      title,
+      amount,
+      date,
+    };
+    onAddExpense(newExpense);
+    setTitle('');
+    setAmount('');
+    setDate('');
+  };
+
+  return (
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="title">Title:</label>
+        <input type="text" id="title" value={title} onChange={handleTitleChange} />
+      </div>
+      <div>
+        <label htmlFor="amount">Amount:</label>
+        <input type="number" id="amount" value={amount} onChange={handleAmountChange} />
+      </div>
+      <div>
+        <label htmlFor="date">Date:</label>
+        <input type="date" id="date" value={date} onChange={handleDateChange} />
+      </div>
+      <button type="submit">Add Expense</button>
+    </form>
+  );
+};
+
+export default ExpenseForm;
+
+
+//ExpenseItem Component:
+
+import React from 'react';
+
+const ExpenseItem = ({ expense }) => {
+  return (
+    <li>
+      <div>Title: {expense.title}</div>
+      <div>Amount: {expense.amount}</div>
+      <div>Date: {expense.date}</div>
+    </li>
+  );
+};
+
+export default ExpenseItem;
+
+
+//ExpenseList Component:
+
+import React from 'react';
+import ExpenseItem from './ExpenseItem';
+
+const ExpenseList = ({ expenses }) => {
+  return (
+    <ul>
+      {expenses.map((expense) => (
+        <ExpenseItem key={expense.id} expense={expense} />
+      ))}
+    </ul>
+  );
+};
+
+export default ExpenseList;
+
+// App Component:
+import React, { useState } from 'react';
+import ExpenseForm from './ExpenseForm';
+import ExpenseList from './ExpenseList';
+
+const App = () => {
+  const [expenses, setExpenses] = useState([]);
+
+  const handleAddExpense = (newExpense) => {
+    setExpenses([...expenses, newExpense]);
+  };
+
+  return (
+    <div>
+      <h1>Expense Tracker</h1>
+      <ExpenseForm onAddExpense={handleAddExpense} />
+      <ExpenseList expenses={expenses} />
+    </div>
+  );
+};
+
+export default App;
+
+
+
