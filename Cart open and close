@@ -1,0 +1,129 @@
+// Cart.js
+import React, { useState } from 'react';
+import './Cart.css'; // Import the CSS file
+
+const Cart = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleCartIconClick = () => {
+    setIsOpen(true);
+  };
+
+  const handleCloseButtonClick = () => {
+    setIsOpen(false);
+  };
+
+  return (
+    <>
+      <div className={`cart-icon ${isOpen ? 'open' : ''}`} onClick={handleCartIconClick}>
+        {/* Insert your cart icon here */}
+      </div>
+      {isOpen && (
+        <div className="cart">
+          <button className="close-button" onClick={handleCloseButtonClick}>
+            Close
+          </button>
+          <p>Contents of the Cart:</p>
+          <ul>
+            <li>Burger x 2</li>
+            <li>Pizza x 1</li>
+            <li>Fries x 3</li>
+          </ul>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Cart;
+
+
+/* Cart.css */
+
+/* Add styles for your cart icon */
+.cart-icon {
+  /* Add styles for your cart icon, e.g., background image, size, etc. */
+  width: 50px;
+  height: 50px;
+  background-color: #007bff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.cart-icon.open {
+  background-color: #ff0000; /* Change the color when the cart is open */
+}
+
+/* Add styles for the cart */
+.cart {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cart p {
+  font-weight: bold;
+}
+
+.cart ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.cart li {
+  margin-bottom: 5px;
+}
+
+/* Add styles for the close button */
+.close-button {
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #0056b3;
+}
+
+
+
+// App.js
+import React from 'react';
+import './App.css'; // Import the CSS file
+import OrderForm from './OrderForm';
+import Cart from './Cart';
+
+const App = () => {
+  return (
+    <div className="app">
+      <OrderForm />
+      <Cart />
+    </div>
+  );
+};
+
+export default App;
+
+
+
+/* App.css */
+.app {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f9f9f9;
+}
