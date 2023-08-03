@@ -1,0 +1,91 @@
+import React, { useState } from 'react';
+
+const OrderForm = () => {
+  const [quantity, setQuantity] = useState(1);
+
+  const handleQuantityChange = (e) => {
+    const value = parseInt(e.target.value);
+    setQuantity(isNaN(value) ? 0 : value);
+  };
+
+  const handleAddButtonClick = () => {
+    // Add your logic here for handling the "ADD" button click.
+    // For now, we're not doing anything.
+  };
+
+  return (
+    <>
+      <div>
+        <form>
+          <label>
+            Quantity:
+            <input
+              type="number"
+              value={quantity}
+              onChange={handleQuantityChange}
+              min={1}
+              max={10}
+            />
+          </label>
+          <button type="button" onClick={handleAddButtonClick}>
+            ADD
+          </button>
+        </form>
+      </div>
+    </>
+  );
+};
+
+export default OrderForm;
+
+
+/* Styling for the main container */
+div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Styling for the form container */
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+/* Styling for the label and input */
+label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+input[type="number"] {
+  width: 100px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+/* Styling for the "ADD" button */
+button {
+  margin-top: 10px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
