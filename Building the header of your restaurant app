@@ -1,0 +1,90 @@
+//Header.js
+import React, { Fragment } from 'react';
+import './Header.module.css';
+
+const Header = () => {
+  return (
+    <Fragment>
+      <header className="header">
+        <h1>Reactmeals</h1>
+        <button className="cart-button">
+          <img src="path_to_cart_icon.png" alt="Cart" />
+          <span>0 Cart Items</span>
+        </button>
+      </header>
+      <div className="half-screen-background">
+        {/* Content for the div with background image */}
+      </div>
+    </Fragment>
+  );
+}
+
+export default Header;
+
+
+//Header.module.css:
+.header {
+  background-color: #f8f8f8;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.cart-button {
+  background-color: transparent;
+  border: none;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+}
+
+.cart-button img {
+  width: 30px;
+  height: 30px;
+}
+
+.cart-button span {
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.half-screen-background {
+  height: 50vh; /* Adjust the height as needed */
+  background-image: url('path_to_background_image.jpg'); /* Replace with your background image path */
+  background-size: cover;
+  background-position: center;
+}
+
+//app.js
+import React, { Fragment } from 'react';
+import Header from './Header';
+import './Header.module.css';
+
+const App = () => {
+  return (
+    <Fragment>
+      <Header />
+      {/* Other content of your app */}
+    </Fragment>
+  );
+}
+
+export default App;
+
+
+//app. Css
+.container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
+/* Add any other styles for your app's content here */
+
