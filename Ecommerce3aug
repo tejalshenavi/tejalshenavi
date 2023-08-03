@@ -1,0 +1,139 @@
+//app.js
+
+
+  
+  import React, { useState, useEffect } from 'react';
+import './App.css'; // Import the CSS file for styling
+import ProductEntry from './ProductEntry';
+
+const App = () => {
+  const [products, setProducts] = useState([]);
+  const [totalValue, setTotalValue] = useState(0);
+
+  const addProduct = (product) => {
+    setProducts([...products, product]);
+  };
+
+  const deleteProduct = (productId, sellingPrice) => {
+    const updatedProducts = products.filter((product) => product.productId !== productId);
+    setProducts(updatedProducts);
+
+    // Update total value
+    const updatedTotal = totalValue - sellingPrice;
+    setTotalValue(updatedTotal);
+  };
+
+  useEffect(() => {
+    const total = products.reduce((acc, product) => acc + product.sellingPrice, 0);
+    setTotalValue(total);
+    // Save to local storage
+    localStorage.setItem('products', JSON.stringify(products));
+  }, [products]);
+
+  useEffect(() => {
+    // Retrieve from local storage
+    const savedProducts = JSON.parse(localStorage.getItem('products'));
+    if (savedProducts) {
+      setProducts(savedProducts);
+    }
+  }, []);
+
+  return (
+    <div>
+      <h1>Product Management App</h1>
+      <ProductEntry addProduct={addProduct} />
+      <div>
+        {products.map((product) => (
+          <div key={product.productId}>
+            <span>{product.productName} - ${product.sellingPrice}</span>
+            <button onClick={() => deleteProduct(product.productId, product.sellingPrice)}>Delete</button>
+          </div>
+        ))}
+      </div>
+      <div>Total value worth of product = ${totalValue}</div>
+    </div>
+  );
+};
+
+export default App;
+
+
+
+
+//app.css
+
+/* App.css */
+body {
+  font-family: Arial, sans-serif;
+  margin: 20px;
+}
+
+/* You can add more styles as per your requirements */
+
+
+
+//ProductEntry.js
+import React, { useState } from 'react';
+import './ProductEntry.css'; // Import the CSS file for styling
+
+const ProductEntry = ({ addProduct }) => {
+  const [productId, setProductId] = useState('');
+  const [sellingPrice, setSellingPrice] = useState('');
+  const [productName, setProductName] = useState('');
+
+  const handleAddProduct = () => {
+    const product = {
+      productId,
+      sellingPrice: parseFloat(sellingPrice),
+      productName,
+    };
+    addProduct(product);
+    setProductId('');
+    setSellingPrice('');
+    setProductName('');
+  };
+
+  return (
+    <div className="product-entry">
+      <input type="text" placeholder="Product ID" value={productId} onChange={(e) => setProductId(e.target.value)} />
+      <input type="number" placeholder="Selling Price" value={sellingPrice} onChange={(e) => setSellingPrice(e.target.value)} />
+      <input type="text" placeholder="Product Name" value={productName} onChange={(e) => setProductName(e.target.value)} />
+      <button onClick={handleAddProduct}>Add Product</button>
+    </div>
+  );
+};
+
+export default ProductEntry;
+
+
+
+
+/* ProductEntry.css */
+.product-entry {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 5px;
+}
+
+.product-entry input {
+  margin-bottom: 10px;
+  padding: 5px;
+}
+
+.product-entry button {
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.product-entry button:hover {
+  background-color: #0056b3;
+}
+
+/* You can add more styles as per your requirements */
