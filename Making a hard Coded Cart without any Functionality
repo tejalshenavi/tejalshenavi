@@ -1,0 +1,167 @@
+// OrderForm.js
+import React, { useState } from 'react';
+import './OrderForm.css'; // Import the CSS file
+
+const OrderForm = () => {
+  const [quantity, setQuantity] = useState(1);
+
+  const handleQuantityChange = (e) => {
+    const value = parseInt(e.target.value);
+    setQuantity(isNaN(value) ? 0 : value);
+  };
+
+  return (
+    <>
+      <div className="order-form">
+        <form>
+          <label>
+            Burger (Item name) 45rs
+            <input
+              type="number"
+              value={quantity}
+              onChange={handleQuantityChange}
+              min={1}
+              max={10}
+            />
+          </label>
+          <div className="button-group">
+            <button type="button" className="close-button">
+              Close
+            </button>
+            <button type="button" className="order-button">
+              Order
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
+  );
+};
+
+export default OrderForm;
+
+
+
+/* OrderForm.css */
+
+.order-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.order-form label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.order-form input[type="number"] {
+  width: 100px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.close-button,
+.order-button {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button {
+  background-color: #ff0000;
+  color: #fff;
+  margin-right: 5px;
+}
+
+.order-button {
+  background-color: #007bff;
+  color: #fff;
+  margin-left: 5px;
+}
+
+
+
+// App.js
+import React from 'react';
+import OrderForm from './OrderForm';
+import Cart from './Cart';
+
+const App = () => {
+  return (
+    <>
+      <OrderForm />
+      <Cart />
+    </>
+  );
+};
+
+export default App;
+
+
+
+
+// Cart.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './Cart.css'; // Import the CSS file
+
+const Cart = () => {
+  return ReactDOM.createPortal(
+    <div className="cart">
+      <p>Contents of the Cart:</p>
+      <ul>
+        <li>Burger x 2</li>
+        <li>Pizza x 1</li>
+        <li>Fries x 3</li>
+      </ul>
+    </div>,
+    document.getElementById('cart-root')
+  );
+};
+
+export default Cart;
+
+
+
+/* Cart.css */
+
+.cart {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cart p {
+  font-weight: bold;
+}
+
+.cart ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.cart li {
+  margin-bottom: 5px;
+}
