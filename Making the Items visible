@@ -1,0 +1,90 @@
+/*Card.js:
+
+import React from 'react';
+import styles from './Card.module.css';
+
+const Card = (props) => {
+  return <div className={`${styles.card} ${props.className}`}>{props.children}</div>;
+};
+
+export default Card;
+
+
+//Card.module.css://this must be in ui
+
+.card {
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  padding: 1rem;
+}
+
+/* Add more styles as needed */
+
+//MealsItem.js:
+import React from 'react';
+import styles from './MealsItem.module.css';
+
+const MealsItem = (props) => {
+  return (
+    <li className={styles.meal}>
+      <div>
+        <h3>{props.name}</h3>
+        <div className={styles.description}>{props.description}</div>
+        <div className={styles.price}>${props.price.toFixed(2)}</div>
+      </div>
+    </li>
+  );
+};
+
+export default MealsItem;
+
+
+//MealsItem.module.css: 
+
+.meal {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.description {
+  font-size: 1.25rem;
+  color: #555;
+  margin-bottom: 0.5rem;
+}
+
+.price {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+/* Add more styles as needed */
+
+
+
+//App.js: 
+import React from 'react';
+import Meals from './components/Meals/Meals';
+import Card from './components/UI/Card';
+
+function App() {
+  return (
+    <div>
+      <h1>My App</h1>
+      <main>
+        <Card>
+          <Meals />
+        </Card>
+      </main>
+    </div>
+  );
+}
+
+export default App;
+
+
+
