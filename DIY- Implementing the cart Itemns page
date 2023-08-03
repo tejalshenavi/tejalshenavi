@@ -1,0 +1,357 @@
+// CartContext.js
+import React, { createContext, useState, useContext } from 'react';
+
+const CartContext = createContext();
+
+export const useCartContext = () => {
+  return useContext(CartContext);
+};
+
+const CartProvider = ({ children }) => {
+  const [cartItems, setCartItems] = useState([]);
+
+  const addToCart = (item) => {
+    setCartItems((prevItems) => [...prevItems, item]);
+  };
+
+  const removeFromCart = (item) => {
+    setCartItems((prevItems) => prevItems.filter((prevItem) => prevItem.id !== item.id));
+  };
+
+  const clearCart = () => {
+    setCartItems([]);
+  };
+
+  return (
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, clearCart }}>
+      {children}
+    </CartContext.Provider>
+  );
+};
+
+export default CartProvider;
+
+
+
+
+// App.js
+import React from 'react';
+import './App.css'; // Import the CSS file
+import OrderForm from './OrderForm';
+import Cart from './Cart';
+import CartProvider from './CartContext';
+
+const App = () => {
+  return (
+    <CartProvider>
+      <div className="app">
+        <OrderForm />
+        <Cart />
+      </div>
+    </CartProvider>
+  );
+};
+
+export default App;
+
+
+
+
+//Update the Cart.js component to use the useCartContext
+
+// Cart.js
+
+// Cart.js
+import React from 'react';
+import './Cart.css'; // Import the CSS file
+import { useCartContext } from './CartContext';
+import { Link } from 'react-router-dom';
+
+const Cart = () => {
+  const { cartItems } = useCartContext();
+
+  return (
+    <>
+      <Link to="/cart-items" className={`cart-icon ${cartItems.length > 0 ? 'has-items' : ''}`}>
+        {/* Insert your cart icon here */}
+        <span className="item-count">{cartItems.length}</span>
+      </Link>
+      {cartItems.length > 0 && (
+        <div className="cart">
+          <button className="close-button">Close</button>
+          <p>Contents of the Cart:</p>
+          <ul>
+            {cartItems.map((item) => (
+              <li key={item.id}>{item.name} x {item.quantity}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </>
+  );
+};
+
+export default Cart;
+ 
+
+
+/* Cart.css */
+
+/* Add styles for your cart icon */
+.cart-icon {
+  /* Add styles for your cart icon, e.g., background image, size, etc. */
+  width: 50px;
+  height: 50px;
+  background-color: #007bff;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 20px;
+  cursor: pointer;
+}
+
+.cart-icon.has-items {
+  /* Add styles for the cart icon when it has items, e.g., change background color or add a badge */
+  background-color: #ff0000; /* Change the color when the cart has items */
+}
+
+.item-count {
+  /* Add styles for the count number inside the cart icon, e.g., font size, position, etc. */
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  background-color: #ff0000;
+  color: #fff;
+  font-size: 12px;
+  padding: 2px 5px;
+  border-radius: 50%;
+}
+
+/* Add styles for the cart */
+.cart {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  padding: 10px;
+  background-color: #f9f9f9;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.cart p {
+  font-weight: bold;
+}
+
+.cart ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.cart li {
+  margin-bottom: 5px;
+}
+
+/* Add styles for the close button */
+.close-button {
+  margin-bottom: 10px;
+  padding: 5px 10px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.close-button:hover {
+  background-color: #0056b3;
+}
+
+
+
+//Update the OrderForm.js component to use the useCartContext hook to add items to the cart:
+// OrderForm.js
+import React, { useState } from 'react';
+import './OrderForm.css'; // Import the CSS file
+import { useCartContext } from './CartContext';
+
+const OrderForm = () => {
+  const [quantity, setQuantity] = useState(1);
+  const { addToCart } = useCartContext();
+
+  const handleQuantityChange = (e) => {
+    const value = parseInt(e.target.value);
+    setQuantity(isNaN(value) ? 0 : value);
+  };
+
+  const handleAddButtonClick = () => {
+    addToCart({ id: Date.now(), name: 'Burger', quantity }); // Replace 'Burger' with the actual item name
+    setQuantity(1);
+  };
+
+  return (
+    <>
+      <div className="order-form">
+        <form>
+          <label>
+            Burger (Item name) 45rs
+            <input
+              type="number"
+              value={quantity}
+              onChange={handleQuantityChange}
+              min={1}
+              max={10}
+            />
+          </label>
+          <div className="button-group">
+            <button type="button" className="close-button">
+              Close
+            </button>
+            <button type="button" className="order-button" onClick={handleAddButtonClick}>
+              Order
+            </button>
+          </div>
+        </form>
+      </div>
+    </>
+  );
+};
+
+export default OrderForm;
+
+
+/* OrderForm.css */
+
+.order-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  max-width: 300px;
+  margin: 0 auto;
+}
+
+.order-form label {
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.order-form input[type="number"] {
+  width: 100px;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+.button-group {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 10px;
+  width: 100%;
+}
+
+.close-button,
+.order-button {
+  flex: 1;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+
+
+//Create a new file named CartItems.js
+// CartItems.js
+import React from 'react';
+import './CartItems.css'; // Import the CSS file
+import { useCartContext } from './CartContext';
+
+const CartItems = () => {
+  const { cartItems, removeFromCart } = useCartContext();
+
+  return (
+    <div className="cart-items">
+      <h2>Cart Items</h2>
+      {cartItems.length > 0 ? (
+        <ul>
+          {cartItems.map((item) => (
+            <li key={item.id}>
+              <span>{item.name}</span>
+              <span>x {item.quantity}</span>
+              <button onClick={() => removeFromCart(item)}>Remove</button>
+            </li>
+          ))}
+        </ul>
+      ) : (
+        <p>Your cart is empty.</p>
+      )}
+    </div>
+  );
+};
+
+export default CartItems;
+
+
+/* CartItems.css */
+
+.cart-items {
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: #f9f9f9;
+  max-width: 500px;
+  margin: 20px auto;
+}
+
+.cart-items h2 {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.cart-items ul {
+  list-style: none;
+  padding: 0;
+}
+
+.cart-items li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.cart-items button {
+  padding: 5px 10px;
+  background-color: #ff0000;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.cart-items button:hover {
+  background-color: #cc0000;
+}
+
+
+.close-button {
+  background-color: #ff0000;
+  color: #fff;
+  margin-right: 5px;
+}
+
+.order-button {
+  background-color: #007bff;
+  color: #fff;
+  margin-left: 5px;
+}
+
+
