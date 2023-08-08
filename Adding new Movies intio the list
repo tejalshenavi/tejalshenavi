@@ -1,0 +1,59 @@
+import React, { useState } from 'react';
+
+function MovieList() {
+  // Code for fetching and displaying movies
+  return (
+    <div>
+      {/* Existing code for movie list */}
+    </div>
+  );
+}
+
+function App() {
+  const [newMovie, setNewMovie] = useState({ title: '', releaseYear: '' });
+  const [showNewMovie, setShowNewMovie] = useState(false);
+
+  const handleInputChange = event => {
+    const { name, value } = event.target;
+    setNewMovie(prevMovie => ({ ...prevMovie, [name]: value }));
+  };
+
+  const handleAddMovie = () => {
+    setShowNewMovie(true);
+    console.log(newMovie);
+  };
+
+  return (
+    <div>
+      <form>
+        <label>Title:</label>
+        <input
+          type="text"
+          name="title"
+          value={newMovie.title}
+          onChange={handleInputChange}
+        />
+        <label>Release Year:</label>
+        <input
+          type="text"
+          name="releaseYear"
+          value={newMovie.releaseYear}
+          onChange={handleInputChange}
+        />
+        <button type="button" onClick={handleAddMovie}>
+          Add Movie
+        </button>
+      </form>
+      <MovieList />
+      {showNewMovie && (
+        <div>
+          <h2>New Movie Details:</h2>
+          <p>Title: {newMovie.title}</p>
+          <p>Release Year: {newMovie.releaseYear}</p>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
