@@ -1,0 +1,87 @@
+import React from 'react';
+import { BrowserRouter, Route } from 'react-router-dom';
+import Home from './components/Home';
+import Products from './components/Products';
+import Navigation from './components/Navigation';
+
+function App() {
+  return (
+    <BrowserRouter>
+      <Navigation />
+      <Route path="/" exact component={Home} />
+      <Route path="/products" component={Products} />
+    </BrowserRouter>
+  );
+}
+
+export default App;
+
+
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+
+function Navigation() {
+  return (
+    <nav>
+      <ul>
+        <li><NavLink exact to="/">Home</NavLink></li>
+        <li><NavLink to="/products">Products</NavLink></li>
+      </ul>
+    </nav>
+  );
+}
+
+export default Navigation;
+
+import React from 'react';
+
+function Home() {
+  return (
+    <div className="home">
+      <header>
+        <h1>Welcome to Our Ecommerce Website</h1>
+        <p>Discover the best products and deals!</p>
+      </header>
+      <section className="featured">
+        <h2>Featured Products</h2>
+        {/* Display featured products with images and descriptions */}
+      </section>
+      <section className="about">
+        <h2>About Us</h2>
+        <p>We are dedicated to providing high-quality products...</p>
+      </section>
+    </div>
+  );
+}
+
+export default Home;
+
+
+
+import React from 'react';
+
+function Products() {
+  const products = [
+    { id: 1, name: 'Product 1', price: '$19.99', description: 'A great product for your needs.' },
+    { id: 2, name: 'Product 2', price: '$29.99', description: 'Experience the latest in technology.' },
+    { id: 3, name: 'Product 3', price: '$14.99', description: 'Upgrade your lifestyle with this product.' },
+    // Add more product entries
+  ];
+
+  return (
+    <div className="products">
+      <h1>Our Products</h1>
+      <ul className="product-list">
+        {products.map(product => (
+          <li key={product.id} className="product">
+            <h2>{product.name}</h2>
+            <p>{product.description}</p>
+            <p>Price: {product.price}</p>
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default Products;
