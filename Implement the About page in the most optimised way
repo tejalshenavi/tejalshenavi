@@ -1,0 +1,64 @@
+In your App.js or main entry point, import the necessary components from react-router-dom and create your routing structure
+
+import React from 'react';
+import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
+import AboutPage from './AboutPage'; // Replace with the actual path to your AboutPage component
+
+const App = () => {
+  return (
+    <Router>
+      <div className="App">
+        <nav>
+          <ul>
+            <li>
+              <NavLink to="/" activeClassName="active" exact>
+                Home
+              </NavLink>
+            </li>
+            <li>
+              <NavLink to="/about" activeClassName="active">
+                About
+              </NavLink>
+            </li>
+            {/* Other navigation links */}
+          </ul>
+        </nav>
+
+        <Switch>
+          <Route path="/about">
+            <AboutPage />
+          </Route>
+          {/* Other routes */}
+        </Switch>
+      </div>
+    </Router>
+  );
+};
+
+export default App;
+
+
+Create the AboutPage.js component
+import React from 'react';
+
+const AboutPage = () => {
+  return (
+    <div>
+      <h2>About Us</h2>
+      {/* Add about content */}
+    </div>
+  );
+};
+
+export default AboutPage;
+
+
+Now you can style your active NavLink and add any additional styling to make it match your design:
+
+/* App.css or your preferred stylesheet */
+.active {
+  font-weight: bold;
+  color: blue;
+}
+
+
