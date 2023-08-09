@@ -1,0 +1,92 @@
+import React from 'react';
+
+function ProductDetails({ match }) {
+  const productId = parseInt(match.params.id); // Assuming the product ID is passed as a URL parameter
+  const product = getProductById(productId); // Implement this function to get the product details
+
+  if (!product) {
+    return <div>Product not found</div>;
+  }
+
+  return (
+    <div className="product-details">
+      <h2>{product.name}</h2>
+      <div className="product-images">
+        {product.images.map((image, index) => (
+          <img key={index} src={image} alt={`Product ${index + 1}`} />
+        ))}
+      </div>
+      <div className="product-reviews">
+        <h3>Reviews</h3>
+        <ul>
+          {product.reviews.map((review, index) => (
+            <li key={index}>{review}</li>
+          ))}
+        </ul>
+      </div>
+    </div>
+  );
+}
+
+export default ProductDetails;
+
+
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Product from './Product';
+import { products } from './productData'; // Assuming you have a separate file for product data
+
+function Store({ addToCart }) {
+  return (
+    <div className="store">
+      <h2>Store</h2>
+      <div className="product-list">
+        {products.map((product) => (
+          <Link key={product.id} to={`/products/${product.id}`}>
+            <Product
+              id={product.id}
+              name={product.name}
+              price={product.price}
+              description={product.description}
+              addToCart={addToCart}
+            />
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+export default Store;
+
+
+
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import Header from './Header';
+import Home from './Home';
+import Store from './Store';
+import About from './About';
+import Cart from './Cart';
+import Login from './Login';
+import PrivateRoute from './PrivateRoute';
+import ProductDetails from './ProductDetails';
+
+function App() {
+  return (
+    <Router>
+      <Header />
+      <Switch>
+        <Route path="/" exact component={Home} />
+        <Route path="/store" component={Store} />
+        <Route path="/about" component={About} />
+        <Route path="/login" component={Login} />
+        <PrivateRoute path="/cart" component={Cart} />
+        <Route path="/products/:id" component={ProductDetails} />
+      </Switch>
+    </Router>
+  );
+}
+
+export default App;
+
