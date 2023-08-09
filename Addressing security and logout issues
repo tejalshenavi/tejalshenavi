@@ -1,0 +1,63 @@
+import React, { createContext, useContext, useState, useEffect } from 'react';
+
+const AuthContext = createContext();
+
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
+export const AuthProvider = ({ children }) => {
+  const [token, setToken] = useState(localStorage.getItem('token') || '');
+
+  useEffect(() => {
+    if (token) {
+      localStorage.setItem('token', token);
+    } else {
+      localStorage.removeItem('token');
+    }
+  }, [token]);
+
+  const login = (newToken) => {
+    setToken(newToken);
+  };
+
+  const logout = () => {
+    setToken('');
+  };
+
+  const isAuthenticated = !!token;
+
+  const contextValue = {
+    token,
+    login,
+    logout,
+    isAuthenticated,
+  };
+
+  return (
+    <AuthContext.Provider value={contextValue}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+
+In your Login.js, after a successful login
+const handleLogin = async () => {
+  // Your login logic
+
+  // After successful login
+  login(response.idToken);
+};
+
+
+
+In your Logout.js, in the handleLogout function:
+
+jsx
+
+const handleLogout = () => {
+  logout();
+  history.push('/login');
+};
+
