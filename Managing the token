@@ -1,0 +1,104 @@
+import React, { createContext, useContext, useState } from 'react';
+
+const AuthContext = createContext();
+
+export const useAuth = () => {
+  return useContext(AuthContext);
+};
+
+export const AuthProvider = ({ children }) => {
+  const [token, setToken] = useState(localStorage.getItem('token'));
+
+  const login = (newToken) => {
+    setToken(newToken);
+    localStorage.setItem('token', newToken);
+  };
+
+  const logout = () => {
+    setToken(null);
+    localStorage.removeItem('token');
+  };
+
+  const isAuthenticated = !!token;
+
+  const contextValue = {
+    token,
+    login,
+    logout,
+    isAuthenticated,
+  };
+
+  return (
+    <AuthContext.Provider value={contextValue}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+
+
+
+
+import React, { useState } from 'react';
+import { useAuth } from './AuthContext';
+
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { login } = useAuth();
+
+  const handleLogin = async () => {
+    // Your login logic
+    // After successful login, call: login(response.idToken);
+  };
+
+  return (
+    // Your login form JSX
+  );
+};
+
+export default Login;
+
+
+
+
+
+
+import React from 'react';
+import { useAuth } from './AuthContext';
+
+const Logout = () => {
+  const { logout } = useAuth();
+
+  const handleLogout = () => {
+    // Your logout logic
+    // Call the logout function to clear the token
+  };
+
+  return (
+    // Your logout button JSX
+  );
+};
+
+export default Logout;
+
+
+
+
+import React from 'react';
+import { AuthProvider } from './AuthContext';
+import Login from './Login';
+import Logout from './Logout';
+
+const App = () => {
+  return (
+    <AuthProvider>
+      {/* Your other components */}
+      <Login />
+      <Logout />
+    </AuthProvider>
+  );
+};
+
+export default App;
+
