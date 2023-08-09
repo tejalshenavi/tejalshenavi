@@ -1,0 +1,98 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const Navigation = () => {
+  return (
+    <nav>
+      <ul>
+        <li><Link to="/about">About</Link></li>
+        <li><Link to="/login">Login</Link></li> {/* Add this line */}
+        {/* Other navigation items */}
+      </ul>
+    </nav>
+  );
+};
+
+export default Navigation;
+
+
+
+
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { AuthProvider } from './AuthContext';
+import Navigation from './Navigation'; // Import your Navigation component
+import About from './About'; // Import your About component
+import Login from './Login'; // Import your Login component
+import Products from './Products'; // Import your Products component
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <Navigation />
+        <Switch>
+          <Route path="/about" component={About} />
+          <Route path="/login" component={Login} />
+          <Route path="/products" component={Products} />
+          {/* Other routes */}
+        </Switch>
+      </Router>
+    </AuthProvider>
+  );
+};
+
+export default App;
+
+
+
+
+import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+
+const Login = () => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const { login } = useAuth();
+  const history = useHistory();
+
+  const handleLogin = async () => {
+    setError('');
+
+    try {
+      const response = await fetch('https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=YOUR_API_KEY', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          email,
+          password,
+          returnSecureToken: true,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        setError(data.error.message);
+      } else {
+        login(data.idToken);
+        history.push('/products'); // Redirect to products page on successful login
+      }
+    } catch (error) {
+      setError('An error occurred. Please try again.');
+    }
+  };
+
+  return (
+    // Your login form JSX with input fields, error display, and login button
+  );
+};
+
+export default Login;
+
+
+
