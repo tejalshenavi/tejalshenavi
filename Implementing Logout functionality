@@ -1,0 +1,45 @@
+import React from 'react';
+import { useAuth } from './AuthContext';
+import { useHistory } from 'react-router-dom'; // Make sure you have react-router-dom installed
+
+const Logout = () => {
+  const { logout } = useAuth();
+  const history = useHistory();
+
+  const handleLogout = () => {
+    logout();
+    history.push('/login'); // Redirect the user to the login page
+  };
+
+  return (
+    <button onClick={handleLogout}>Logout</button>
+  );
+};
+
+export default Logout;
+
+
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { AuthProvider } from './AuthContext';
+import Login from './Login';
+import ChangePassword from './ChangePassword';
+import Logout from './Logout';
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <Switch>
+          <Route path="/login" component={Login} />
+          <Route path="/change-password" component={ChangePassword} />
+          <Route path="/logout" component={Logout} />
+          {/* Your other routes */}
+        </Switch>
+      </Router>
+    </AuthProvider>
+  );
+};
+
+export default App;
+
