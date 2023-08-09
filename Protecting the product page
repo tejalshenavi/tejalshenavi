@@ -1,0 +1,51 @@
+import React from 'react';
+import { Redirect } from 'react-router-dom';
+import { useAuth } from './AuthContext';
+
+const Products = () => {
+  const { isAuthenticated } = useAuth();
+
+  if (!isAuthenticated) {
+    return <Redirect to="/login" />;
+  }
+
+  // Render your actual Products content here for logged-in users
+  return (
+    <div>
+      <h2>Products</h2>
+      {/* Your products content */}
+    </div>
+  );
+};
+
+export default Products;
+
+
+
+import React from 'react';
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+import { AuthProvider } from './AuthContext';
+import Navigation from './Navigation';
+import About from './About';
+import Login from './Login';
+import Products from './Products';
+
+const App = () => {
+  return (
+    <AuthProvider>
+      <Router>
+        <Navigation />
+        <Switch>
+          <Route path="/about" component={About} />
+          <Route path="/login" component={Login} />
+          <Route path="/products" component={Products} />
+          {/* Other routes */}
+        </Switch>
+      </Router>
+    </AuthProvider>
+  );
+};
+
+export default App;
+
+
