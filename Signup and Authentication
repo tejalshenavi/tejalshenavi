@@ -1,0 +1,90 @@
+import React from 'react';
+import loaderImage from './loader.gif';
+
+const Loader = () => {
+  return (
+    <div className="loader">
+      <img src={loaderImage} alt="Loading..." />
+    </div>
+  );
+};
+
+export default Loader;
+
+
+import React, { useState } from 'react';
+import Loader from './Loader';
+
+const SignUpForm = () => {
+  const [loading, setLoading] = useState(false);
+  const [signUpFailed, setSignUpFailed] = useState(false);
+
+  const handleSignUp = () => {
+    // Simulate loading
+    setLoading(true);
+
+    // Simulate Sign Up process
+    setTimeout(() => {
+      // Simulate Sign Up failure
+      setLoading(false);
+      setSignUpFailed(true);
+    }, 3000); // Simulate a 3-second process, replace with actual logic
+  };
+
+  return (
+    <div className="sign-up-form">
+      <input type="email" placeholder="Email" />
+      <input type="password" placeholder="Password" />
+      <button onClick={handleSignUp}>
+        {loading ? <Loader /> : 'Sign Up'}
+      </button>
+      {signUpFailed && (
+        <div className="feedback">
+          <p>Sign Up failed. Please try again.</p>
+        </div>
+      )}
+    </div>
+  );
+};
+
+export default SignUpForm;
+
+
+import React from 'react';
+import SignUpForm from './SignUpForm';
+import './App.css'; // Add your styling here
+
+function App() {
+  return (
+    <div className="App">
+      <h1>Sign Up Form</h1>
+      <SignUpForm />
+    </div>
+  );
+}
+
+export default App;
+
+
+/* Add your styles here */
+.App {
+  text-align: center;
+  margin: 50px auto;
+  width: 300px;
+}
+
+.sign-up-form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.loader {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  background: url(loader.gif) no-repeat center center;
+}
+
+
+
