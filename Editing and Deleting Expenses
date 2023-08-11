@@ -1,0 +1,91 @@
+import React, { useState, useEffect } from 'react';
+import { database } from './firebase';
+
+function ExpenseTracker() {
+  const [expenses, setExpenses] = useState([]);
+  const [newExpense, setNewExpense] = useState('');
+  const [editedExpense, setEditedExpense] = useState('');
+  const [editIndex, setEditIndex] = useState(null);
+
+  useEffect(() => {
+    const expensesRef = database.ref('expenses');
+    expensesRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setExpenses(Object.entries(data).map(([key, value]) => ({ key, value })));
+      }
+    });
+
+    return () => expensesRef.off('value');
+  }, []);
+
+  const handleAddExpense = () => {
+    const expensesRef = database.ref('expenses');
+    expensesRef.push(newExpense);
+    setNewExpense('');
+  };
+
+  const handleDeleteExpense = (key) => {
+    const expenseRef = database.ref(`expenses/${key}`);
+    expenseRef.remove()
+      .then(() => {
+        console.log("Expense successfully deleted");
+      })
+      .catch((error) => {
+        console.error("Error deleting expense:", error);
+      });
+  };
+
+  const handleEditExpense = (index, expenseValue) => {
+    setEditIndex(index);
+    setEditedExpense(expenseValue);
+  };
+
+  const handleEditSubmit = (key) => {
+    const expenseRef = database.ref(`expenses/${key}`);
+    expenseRef.set(editedExpense)
+      .then(() => {
+        console.log("Expense successfully edited");
+        setEditIndex(null);
+      })
+      .catch((error) => {
+        console.error("Error editing expense:", error);
+      });
+  };
+
+  return (
+    <div>
+      <h1>Expense Tracker</h1>
+      <ul>
+        {expenses.map(({ key, value }, index) => (
+          <li key={key}>
+            {editIndex === index ? (
+              <>
+                <input
+                  type="text"
+                  value={editedExpense}
+                  onChange={(e) => setEditedExpense(e.target.value)}
+                />
+                <button onClick={() => handleEditSubmit(key)}>Submit</button>
+              </>
+            ) : (
+              <>
+                {value}
+                <button onClick={() => handleEditExpense(index, value)}>Edit</button>
+                <button onClick={() => handleDeleteExpense(key)}>Delete</button>
+              </>
+            )}
+          </li>
+        ))}
+      </ul>
+      <input
+        type="text"
+        value={newExpense}
+        onChange={(e) => setNewExpense(e.target.value)}
+      />
+      <button onClick={handleAddExpense}>Add Expense</button>
+    </div>
+  );
+}
+
+export default ExpenseTracker;
