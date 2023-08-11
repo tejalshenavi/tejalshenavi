@@ -1,0 +1,69 @@
+import firebase from 'firebase/app';
+import 'firebase/database';
+
+const firebaseConfig = {
+  apiKey: 'YOUR_API_KEY',
+  authDomain: 'YOUR_AUTH_DOMAIN',
+  databaseURL: 'YOUR_DATABASE_URL',
+  projectId: 'YOUR_PROJECT_ID',
+  storageBucket: 'YOUR_STORAGE_BUCKET',
+  messagingSenderId: 'YOUR_MESSAGING_SENDER_ID',
+  appId: 'YOUR_APP_ID',
+};
+
+firebase.initializeApp(firebaseConfig);
+
+const database = firebase.database();
+
+export { firebase, database };
+
+
+import React, { useState, useEffect } from 'react';
+import { database } from './firebase';
+
+function ExpenseTracker() {
+  const [expenses, setExpenses] = useState([]);
+  const [newExpense, setNewExpense] = useState('');
+
+  useEffect(() => {
+    // Fetch expenses from Firebase when the component mounts
+    const expensesRef = database.ref('expenses');
+    expensesRef.on('value', (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        setExpenses(Object.values(data));
+      }
+    });
+
+    return () => expensesRef.off('value'); // Cleanup
+  }, []);
+
+  const handleAddExpense = () => {
+    // Add new expense to Firebase
+    const expensesRef = database.ref('expenses');
+    expensesRef.push(newExpense);
+    setNewExpense('');
+  };
+
+  return (
+    <div>
+      <h1>Expense Tracker</h1>
+      <ul>
+        {expenses.map((expense, index) => (
+          <li key={index}>{expense}</li>
+        ))}
+      </ul>
+      <input
+        type="text"
+        value={newExpense}
+        onChange={(e) => setNewExpense(e.target.value)}
+      />
+      <button onClick={handleAddExpense}>Add Expense</button>
+    </div>
+  );
+}
+
+export default ExpenseTracker;
+
+
+
