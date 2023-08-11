@@ -1,0 +1,45 @@
+import React, { useState, useEffect } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+
+const ProfileForm = ({ user, onUpdateProfile }) => {
+  const [displayName, setDisplayName] = useState(user.displayName || '');
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber || '');
+  const [emailVerified, setEmailVerified] = useState(user.emailVerified);
+
+  useEffect(() => {
+    const fetchProfileData = async () => {
+      // ... fetch profile data as before
+      setEmailVerified(user.emailVerified);
+    };
+
+    fetchProfileData();
+  }, []);
+
+  const handleVerifyEmail = async () => {
+    try {
+      await firebase.auth().currentUser.sendEmailVerification();
+      console.log('Verification email sent successfully.');
+    } catch (error) {
+      console.error('Error sending verification email:', error.message);
+    }
+  };
+
+  // ... rest of the code as before
+
+  return (
+    <div>
+      {/* ... rest of the form */}
+      <div>
+        {emailVerified ? (
+          <p>Email verified ✓</p>
+        ) : (
+          <button onClick={handleVerifyEmail}>Verify Email</button>
+        )}
+      </div>
+    </div>
+  );
+};
+
+export default ProfileForm;
