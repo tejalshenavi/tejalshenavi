@@ -1,0 +1,52 @@
+import React from 'react';
+import { connect } from 'react-redux';
+
+// Action Types
+const INCREMENT_BY_5 = 'INCREMENT_BY_5';
+const DECREMENT_BY_5 = 'DECREMENT_BY_5';
+
+// Action Creators
+const incrementBy5 = () => ({ type: INCREMENT_BY_5 });
+const decrementBy5 = () => ({ type: DECREMENT_BY_5 });
+
+// Reducer
+const counterReducer = (state = 0, action) => {
+  switch (action.type) {
+    case INCREMENT_BY_5:
+      return state + 5;
+    case DECREMENT_BY_5:
+      return state - 5;
+    default:
+      return state;
+  }
+};
+
+// Redux Store
+const { createStore } = require('redux');
+const store = createStore(counterReducer);
+
+// Component
+class CounterApp extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>Counter: {this.props.counter}</h1>
+        <button onClick={this.props.incrementBy5}>IncrementBy5</button>
+        <button onClick={this.props.decrementBy5}>DecrementBy5</button>
+      </div>
+    );
+  }
+}
+
+const mapStateToProps = (state) => ({
+  counter: state,
+});
+
+const mapDispatchToProps = {
+  incrementBy5,
+  decrementBy5,
+};
+
+const ConnectedCounterApp = connect(mapStateToProps, mapDispatchToProps)(CounterApp);
+
+export default ConnectedCounterApp;
