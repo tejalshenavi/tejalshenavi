@@ -1,0 +1,94 @@
+import React, { useState } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+
+const LoginScreen = ({ setLoggedIn }) => {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+
+  const handleLogin = () => {
+    firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        setError('');
+        setLoggedIn(true);
+      })
+      .catch((error) => {
+        setError(error.message);
+      });
+  };
+
+  return (
+    <div>
+      <h2>Login</h2>
+      <div>
+        <input
+          type="email"
+          placeholder="Email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+      </div>
+      <div>
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+      </div>
+      {error && <div className="error">{error}</div>}
+      <button onClick={handleLogin}>Login</button>
+    </div>
+  );
+};
+
+export default LoginScreen;
+
+
+import React from 'react';
+
+const WelcomeScreen = () => {
+  return (
+    <div>
+      <h2>Welcome to Expense Tracker</h2>
+    </div>
+  );
+};
+
+export default WelcomeScreen;
+
+
+
+import React, { useState } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import './App.css'; // Apply your own styling
+
+import SignupScreen from './SignupScreen';
+import LoginScreen from './LoginScreen';
+import WelcomeScreen from './WelcomeScreen';
+
+// Initialize Firebase with your config
+
+function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+
+  return (
+    <div className="App">
+      {!loggedIn ? (
+        <>
+          <SignupScreen />
+          <LoginScreen setLoggedIn={setLoggedIn} />
+        </>
+      ) : (
+        <WelcomeScreen />
+      )}
+    </div>
+  );
+}
+
+export default App;
+
