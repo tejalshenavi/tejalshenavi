@@ -1,0 +1,63 @@
+import React, { useState } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import './App.css'; // Apply your own styling
+
+import SignupScreen from './SignupScreen';
+import LoginScreen from './LoginScreen';
+import WelcomeScreen from './WelcomeScreen';
+import ProfileIncomplete from './ProfileIncomplete';
+import ProfileForm from './ProfileForm';
+
+// Initialize Firebase with your config
+
+function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [profileComplete, setProfileComplete] = useState(false);
+
+  const handleCompleteProfile = () => {
+    setProfileComplete(true);
+  };
+
+  const handleUpdateProfile = (updatedProfile) => {
+    setUser({ ...user, ...updatedProfile });
+    setProfileComplete(true);
+  };
+
+  const handleLogout = async () => {
+    // Clear the ID token from local storage
+    localStorage.removeItem('idToken');
+
+    // Log out the user from Firebase
+    await firebase.auth().signOut();
+
+    // Update the state to reflect the user being logged out
+    setLoggedIn(false);
+    setUser(null);
+    setProfileComplete(false);
+  };
+
+  return (
+    <div className="App">
+      <div className="navbar">
+        <button onClick={handleLogout}>Logout</button>
+      </div>
+      {!loggedIn ? (
+        <>
+          <SignupScreen />
+          <LoginScreen setLoggedIn={setLoggedIn} />
+        </>
+      ) : user && !profileComplete ? (
+        <ProfileIncomplete onCompleteProfile={handleCompleteProfile} />
+      ) : user ? (
+        <>
+          <WelcomeScreen />
+          <ProfileForm user={user} onUpdateProfile={handleUpdateProfile} />
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+export default App;
