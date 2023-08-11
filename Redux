@@ -1,0 +1,36 @@
+import React, { useReducer } from 'react';
+
+// Reducer function
+const counterReducer = (state, action) => {
+  switch (action.type) {
+    case 'increment':
+      return { count: state.count + action.value };
+    case 'decrement':
+      return { count: state.count - 1 };
+    default:
+      return state;
+  }
+};
+
+function Counter() {
+  const [state, dispatch] = useReducer(counterReducer, { count: 0 });
+
+  const incrementByFive = () => {
+    for (let i = 0; i < 5; i++) {
+      dispatch({ type: 'increment', value: 1 });
+    }
+  };
+
+  return (
+    <div>
+      <p>Count: {state.count}</p>
+      <button onClick={() => dispatch({ type: 'increment', value: 5 })}>
+        Increment by 5
+      </button>
+      <button onClick={() => dispatch({ type: 'decrement' })}>Decrement</button>
+      <button onClick={incrementByFive}>Increment by 5 (dispatch 5 times)</button>
+    </div>
+  );
+}
+
+export default Counter;
