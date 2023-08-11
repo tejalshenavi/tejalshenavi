@@ -1,0 +1,119 @@
+import React, { useState } from 'react';
+
+const ExpenseForm = ({ addExpense }) => {
+  const [amount, setAmount] = useState('');
+  const [description, setDescription] = useState('');
+  const [category, setCategory] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (amount && description && category) {
+      const expense = {
+        amount,
+        description,
+        category,
+      };
+      addExpense(expense);
+      setAmount('');
+      setDescription('');
+      setCategory('');
+    }
+  };
+
+  return (
+    <div>
+      <h2>Enter Daily Expense</h2>
+      <form onSubmit={handleSubmit}>
+        <div>
+          <label>Amount:</label>
+          <input
+            type="number"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Description:</label>
+          <input
+            type="text"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
+          />
+        </div>
+        <div>
+          <label>Category:</label>
+          <select
+            value={category}
+            onChange={(e) => setCategory(e.target.value)}
+          >
+            <option value="">Select Category</option>
+            <option value="Food">Food</option>
+            <option value="Petrol">Petrol</option>
+            <option value="Salary">Salary</option>
+            {/* Add more categories as needed */}
+          </select>
+        </div>
+        <button type="submit">Add Expense</button>
+      </form>
+    </div>
+  );
+};
+
+export default ExpenseForm;
+
+
+import React from 'react';
+
+const ExpensesList = ({ expenses }) => {
+  return (
+    <div>
+      <h2>Expenses List</h2>
+      <ul>
+        {expenses.map((expense, index) => (
+          <li key={index}>
+            Amount: {expense.amount}, Description: {expense.description}, Category: {expense.category}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+};
+
+export default ExpensesList;
+
+
+
+// ... Previous imports and code
+
+import ExpenseForm from './ExpenseForm';
+import ExpensesList from './ExpensesList';
+
+function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [expenses, setExpenses] = useState([]);
+
+  // ... Other functions and states
+
+  return (
+    <div className="App">
+      <div className="navbar">
+        <button onClick={handleLogout}>Logout</button>
+        {/* ... Other buttons */}
+      </div>
+      {loggedIn ? (
+        <>
+          <ExpenseForm addExpense={(expense) => setExpenses([...expenses, expense])} />
+          <ExpensesList expenses={expenses} />
+        </>
+      ) : (
+        <>
+          <SignupScreen />
+          <LoginScreen setLoggedIn={setLoggedIn} />
+        </>
+      )}
+    </div>
+  );
+}
+
+export default App;
+
