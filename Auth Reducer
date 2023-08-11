@@ -1,0 +1,42 @@
+import React, { useState } from 'react';
+
+const App = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  const handleLogin = () => {
+    setIsAuthenticated(true);
+  };
+
+  const handleLogout = () => {
+    setIsAuthenticated(false);
+  };
+
+  return (
+    <div>
+      {isAuthenticated ? (
+        <LoggedInScreen onLogout={handleLogout} />
+      ) : (
+        <NotLoggedInScreen onLogin={handleLogin} />
+      )}
+    </div>
+  );
+};
+
+const NotLoggedInScreen = ({ onLogin }) => (
+  <div>
+    <h1>Login Form</h1>
+    <input type="text" placeholder="Username" />
+    <input type="password" placeholder="Password" />
+    <button onClick={onLogin}>Login</button>
+  </div>
+);
+
+const LoggedInScreen = ({ onLogout }) => (
+  <div>
+    <h1>Welcome, User!</h1>
+    <p>You are logged in.</p>
+    <button onClick={onLogout}>Logout</button>
+  </div>
+);
+
+export default App;
