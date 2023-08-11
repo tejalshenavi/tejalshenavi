@@ -1,0 +1,117 @@
+import React, { useState } from 'react';
+
+const ProfileIncomplete = ({ onCompleteProfile }) => {
+  return (
+    <div>
+      <h2>Your Profile is Incomplete</h2>
+      <p>Please complete your profile details to continue.</p>
+      <button onClick={onCompleteProfile}>Complete Profile</button>
+    </div>
+  );
+};
+
+export default ProfileIncomplete;
+
+
+import React, { useState } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+
+const ProfileForm = ({ user, onUpdateProfile }) => {
+  const [displayName, setDisplayName] = useState(user.displayName || '');
+  const [phoneNumber, setPhoneNumber] = useState(user.phoneNumber || '');
+
+  const handleUpdateProfile = () => {
+    const updatedProfile = {
+      displayName,
+      phoneNumber,
+    };
+
+    // Update the user's profile details in Firebase
+    firebase
+      .auth()
+      .currentUser.updateProfile(updatedProfile)
+      .then(() => {
+        onUpdateProfile(updatedProfile);
+      })
+      .catch((error) => {
+        console.error('Error updating profile:', error.message);
+      });
+  };
+
+  return (
+    <div>
+      <h2>Complete Your Profile</h2>
+      <div>
+        <label>Display Name:</label>
+        <input
+          type="text"
+          value={displayName}
+          onChange={(e) => setDisplayName(e.target.value)}
+        />
+      </div>
+      <div>
+        <label>Phone Number:</label>
+        <input
+          type="text"
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+      </div>
+      <button onClick={handleUpdateProfile}>Update</button>
+    </div>
+  );
+};
+
+export default ProfileForm;
+
+import React, { useState } from 'react';
+import firebase from 'firebase/app';
+import 'firebase/auth';
+import 'firebase/firestore';
+import './App.css'; // Apply your own styling
+
+import SignupScreen from './SignupScreen';
+import LoginScreen from './LoginScreen';
+import WelcomeScreen from './WelcomeScreen';
+import ProfileIncomplete from './ProfileIncomplete';
+import ProfileForm from './ProfileForm';
+
+// Initialize Firebase with your config
+
+function App() {
+  const [loggedIn, setLoggedIn] = useState(false);
+  const [user, setUser] = useState(null);
+  const [profileComplete, setProfileComplete] = useState(false);
+
+  const handleCompleteProfile = () => {
+    setProfileComplete(true);
+  };
+
+  const handleUpdateProfile = (updatedProfile) => {
+    setUser({ ...user, ...updatedProfile });
+    setProfileComplete(true);
+  };
+
+  return (
+    <div className="App">
+      {!loggedIn ? (
+        <>
+          <SignupScreen />
+          <LoginScreen setLoggedIn={setLoggedIn} />
+        </>
+      ) : user && !profileComplete ? (
+        <ProfileIncomplete onCompleteProfile={handleCompleteProfile} />
+      ) : user ? (
+        <>
+          <WelcomeScreen />
+          <ProfileForm user={user} onUpdateProfile={handleUpdateProfile} />
+        </>
+      ) : null}
+    </div>
+  );
+}
+
+export default App;
+
