@@ -1,0 +1,90 @@
+const initialState = {
+  isLoggedIn: false,
+  token: null,
+  userId: null,
+};
+
+const authReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'LOGIN':
+      return {
+        ...state,
+        isLoggedIn: true,
+        token: action.token,
+        userId: action.userId,
+      };
+    case 'LOGOUT':
+      return initialState;
+    default:
+      return state;
+  }
+};
+
+export default authReducer;
+
+const initialState = {
+  expenses: [],
+};
+
+const expensesReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'ADD_EXPENSE':
+      return {
+        ...state,
+        expenses: [...state.expenses, action.expense],
+      };
+    case 'SET_EXPENSES':
+      return {
+        ...state,
+        expenses: action.expenses,
+      };
+    default:
+      return state;
+  }
+};
+
+export default expensesReducer;
+
+
+import { combineReducers } from 'redux';
+import authReducer from './authReducer';
+import expensesReducer from './expensesReducer';
+
+const rootReducer = combineReducers({
+  auth: authReducer,
+  expenses: expensesReducer,
+});
+
+export default rootReducer;
+
+
+
+import { createStore } from 'redux';
+import rootReducer from './rootReducer';
+
+const store = createStore(rootReducer);
+
+export default store;
+
+
+
+import React from 'react';
+import { Provider } from 'react-redux';
+import store from './store';
+import AuthComponent from './AuthComponent';
+import ExpensesComponent from './ExpensesComponent';
+
+function App() {
+  return (
+    <Provider store={store}>
+      <div className="App">
+        <AuthComponent />
+        <ExpensesComponent />
+      </div>
+    </Provider>
+  );
+}
+
+export default App;
+
+
