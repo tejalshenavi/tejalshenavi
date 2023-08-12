@@ -1,0 +1,43 @@
+import React, { useState, useEffect } from 'react';
+import Notification from './UI/Notification'; // Import the Notification component
+
+function App() {
+  const [notification, setNotification] = useState(null);
+
+  const handleAPICall = () => {
+    // Simulate API call
+    const isSuccess = true; // Replace with actual API call logic
+    if (isSuccess) {
+      setNotification('success');
+    } else {
+      setNotification('error');
+    }
+  };
+
+  useEffect(() => {
+    // Clear the notification after a delay
+    if (notification) {
+      const timeout = setTimeout(() => {
+        setNotification(null);
+      }, 3000); // Adjust the delay as needed
+      return () => clearTimeout(timeout);
+    }
+  }, [notification]);
+
+  return (
+    <div>
+      {/* Render your app components here */}
+      <button onClick={handleAPICall}>Make API Call</button>
+
+      {notification === 'success' && (
+        <Notification type="success" />
+      )}
+
+      {notification === 'error' && (
+        <Notification type="error" />
+      )}
+    </div>
+  );
+}
+
+export default App;
