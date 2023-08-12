@@ -1,0 +1,58 @@
+import React, { useState, useEffect } from 'react';
+import Notification from './UI/Notification'; // Import the Notification component
+
+function App() {
+  const [cartData, setCartData] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [notification, setNotification] = useState(null);
+
+  useEffect(() => {
+    // Simulate loading data from the server
+    setLoading(true);
+    // Simulate a GET request to retrieve cart data
+    fetch('/api/cart')
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Error fetching data');
+        }
+        return response.json();
+      })
+      .then(data => {
+        setCartData(data);
+        setNotification('success');
+      })
+      .catch(error => {
+        setNotification('error');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  }, []);
+
+  return (
+    <div>
+      {/* Render your app components here */}
+      <button onClick={handleAPICall}>Refresh Cart</button>
+
+      {loading && (
+        <Notification type="loading" />
+      )}
+
+      {notification === 'success' && (
+        <Notification type="success" />
+      )}
+
+      {notification === 'error' && (
+        <Notification type="error" />
+      )}
+
+      <ul>
+        {cartData.map(item => (
+          <li key={item.id}>{item.name}</li>
+        ))}
+      </ul>
+    </div>
+  );
+}
+
+export default App;
