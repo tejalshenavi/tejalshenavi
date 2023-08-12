@@ -1,0 +1,53 @@
+import { configureStore } from '@reduxjs/toolkit';
+import cartReducer from './cartReducer'; // Create this file as mentioned below
+
+const store = configureStore({
+  reducer: {
+    cart: cartReducer,
+  },
+});
+
+export default store;
+
+
+import { createSlice } from '@reduxjs/toolkit';
+
+const cartSlice = createSlice({
+  name: 'cart',
+  initialState: {
+    isVisible: false,
+  },
+  reducers: {
+    toggleCartVisibility: (state) => {
+      state.isVisible = !state.isVisible;
+    },
+  },
+});
+
+export const { toggleCartVisibility } = cartSlice.actions;
+export default cartSlice.reducer;
+
+
+
+import React from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { toggleCartVisibility } from './cartReducer'; // Update the path accordingly
+
+const MyComponent = () => {
+  const dispatch = useDispatch();
+  const isCartVisible = useSelector((state) => state.cart.isVisible);
+
+  return (
+    <div>
+      <button onClick={() => dispatch(toggleCartVisibility())}>
+        Toggle Cart
+      </button>
+      {isCartVisible && <div>This is the cart content.</div>}
+    </div>
+  );
+};
+
+export default MyComponent;
+
+
+
