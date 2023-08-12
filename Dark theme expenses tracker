@@ -1,0 +1,101 @@
+// themeReducer.js
+const initialState = {
+  theme: 'light'
+};
+
+const themeReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case 'TOGGLE_THEME':
+      return {
+        ...state,
+        theme: state.theme === 'light' ? 'dark' : 'light'
+      };
+    default:
+      return state;
+  }
+};
+
+export default themeReducer;
+
+
+// ThemeToggle.js
+import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+const ThemeToggle = () => {
+  const dispatch = useDispatch();
+  const theme = useSelector(state => state.theme);
+
+  const toggleTheme = () => {
+    dispatch({ type: 'TOGGLE_THEME' });
+  };
+
+  return (
+    <button onClick={toggleTheme}>
+      Toggle Theme ({theme === 'light' ? 'Dark' : 'Light'})
+    </button>
+  );
+};
+
+export default ThemeToggle;
+
+
+// DownloadButton.js
+import React from 'react';
+
+const DownloadButton = ({ expenses }) => {
+  const downloadCSV = () => {
+    const csvContent = "data:text/csv;charset=utf-8,"
+      + expenses.map(expense => Object.values(expense).join(',')).join('\n');
+
+    const encodedUri = encodeURI(csvContent);
+    const link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "expenses.csv");
+    document.body.appendChild(link);
+    link.click();
+  };
+
+  return (
+    <button onClick={downloadCSV}>
+      Download Expenses as CSV
+    </button>
+  );
+};
+
+export default DownloadButton;
+
+// App.js
+import React from 'react';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+import themeReducer from './themeReducer';
+import ThemeToggle from './ThemeToggle';
+import DownloadButton from './DownloadButton';
+
+const initialState = {
+  theme: 'light'
+};
+
+const store = createStore(themeReducer, initialState);
+
+const App = () => {
+  const expenses = [
+    // Your expenses data here
+  ];
+
+  return (
+    <Provider store={store}>
+      <div>
+        <h1>Your Expense App</h1>
+        <ThemeToggle />
+        <DownloadButton expenses={expenses} />
+      </div>
+    </Provider>
+  );
+};
+
+export default App;
+
+
+
