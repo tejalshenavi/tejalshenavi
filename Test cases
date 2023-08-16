@@ -1,0 +1,31 @@
+// Assuming you have a method to add an expense
+public boolean addExpense(String category, String description, double amount) {
+    if (amount < 0) {
+        // Handle negative amount
+        return false;
+    }
+    // Add the expense to the list
+    // ...
+    return true;
+}
+
+// Test Case
+@Test
+public void testNonNumericAmount() {
+    ExpenseTracker tracker = new ExpenseTracker();
+    boolean result = tracker.addExpense("Food", "Lunch", "abc"); // Non-numeric amount
+    assertFalse(result); // Expecting false due to invalid input
+}
+
+
+
+// Test Case
+@Test
+public void testPositiveExpenseEntry() {
+    ExpenseTracker tracker = new ExpenseTracker();
+    boolean result = tracker.addExpense("Groceries", "Weekly shopping", 50.0);
+    assertTrue(result); // Expecting true as the expense should be added successfully
+    // You can add further assertions to verify if the expense is correctly displayed in the list
+}
+
+
